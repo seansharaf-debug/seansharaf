@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Command Post · Sharaf</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@300;400;600&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one operator column. Summary tiles, then trend and cities, then the corner queue, then the roster. */
+:root{color-scheme:dark;
+  --bg:#0a0c07;--panel:#12160c;--ink:#ebe7d6;--dim:rgba(235,231,214,.62);--faint:rgba(167,180,120,.2);--ember:#8f9e52;--ok:#a9c25c;
+  --display:"Big Shoulders Display","Impact","Arial Narrow",sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;--body:"Manrope",system-ui,sans-serif;--arabic:"Reem Kufi",serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--body);-webkit-font-smoothing:antialiased;padding:calc(20px + env(safe-area-inset-top,0px)) clamp(16px,4vw,48px) 60px}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--faint);margin-bottom:28px}
+.mark{display:flex;align-items:baseline;gap:10px;font:900 24px/1 var(--display);letter-spacing:.06em;text-transform:uppercase}
+.mark .ar{font:700 20px/1 var(--arabic);color:var(--ember)}
+.mark small{font:500 10px/1 var(--mono);letter-spacing:.2em;color:var(--dim)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:12px 14px;background:var(--ink);color:var(--bg);border:0;cursor:pointer}
+.btn:hover{background:var(--ember);color:#0a0c07}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--faint)}
+.btn.ok{background:var(--ok);color:#07130b}
+.btn[disabled]{opacity:.5;cursor:wait}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.label{font:500 10px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+h2{font:900 34px/1 var(--display);text-transform:uppercase;letter-spacing:.02em;margin-bottom:14px}
+.grid{display:grid;gap:14px}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:30px}
+.tile{border:1px solid var(--faint);background:var(--panel);padding:16px}
+.tile b{display:block;font:900 46px/1 var(--display);font-variant-numeric:tabular-nums;margin-top:8px}
+.tile.lead{border-color:var(--ember)}
+.tile.lead b{color:var(--ember)}
+.two{grid-template-columns:1.4fr 1fr;margin-bottom:34px}
+.two > *{min-width:0}
+.panel{border:1px solid var(--faint);background:var(--panel);padding:18px}
+.bars{display:grid;grid-template-columns:repeat(14,1fr);gap:6px;align-items:end;height:150px;margin-top:12px}
+.bar{background:linear-gradient(180deg,var(--ember),rgba(111,125,60,.35));min-height:2px;position:relative}
+.bar span{position:absolute;top:-16px;left:0;right:0;text-align:center;font:500 10px/1 var(--mono);color:var(--dim);font-variant-numeric:tabular-nums}
+.days{display:grid;grid-template-columns:repeat(14,1fr);gap:6px;margin-top:8px}
+.days span{font:400 9px/1 var(--mono);color:var(--dim);text-align:center}
+.cities{list-style:none;display:grid;gap:0}
+.cities li{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 0;border-bottom:1px solid var(--faint);font-size:14px}
+.cities li b{font:500 13px/1.5 var(--mono);font-variant-numeric:tabular-nums}
+.queue{display:grid;gap:10px;margin-bottom:34px}
+.dua{border:1px solid var(--faint);background:var(--panel);padding:16px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center}
+.dua p{overflow-wrap:anywhere}
+.dua .who{font:500 10px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:8px}
+.empty{color:var(--dim);font-size:14px;padding:12px 0}
+.roster-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.search{background:var(--panel);border:1px solid var(--faint);padding:11px 12px;min-width:min(280px,100%);border-radius:0}
+.search:focus{outline:none;border-color:var(--ember)}
+.tablewrap{overflow-x:auto;border:1px solid var(--faint)}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--faint);white-space:nowrap}
+th{font:500 10px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--dim);background:var(--panel);position:sticky;top:0}
+td.num{font:500 13px/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--ember)}
+td.sms{font:500 11px/1 var(--mono);color:var(--ok)}
+.more{margin-top:12px}
+.gate{min-height:80vh;display:grid;place-items:center}
+.gate form{width:min(380px,100%);display:grid;gap:14px}
+.gate input{background:var(--panel);border:1px solid var(--faint);padding:14px;font:500 16px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;border-radius:0}
+.gate input:focus{outline:none;border-color:var(--ember)}
+.msg{font:500 12px/1.5 var(--mono);color:var(--ember);min-height:1.5em}
+.note{font:400 12px/1.6 var(--mono);color:var(--dim)}
+.cpnav{display:flex;gap:2px;border:1px solid var(--faint);padding:4px;width:max-content;margin-bottom:26px;background:var(--panel)}
+.cpnav a{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:10px 14px;color:var(--dim);text-decoration:none}
+.cpnav a.on{color:var(--bg);background:var(--ink)}
+.tpls{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+.tpl{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--faint);background:var(--panel);cursor:pointer;text-align:left;width:100%}
+.tpl:hover{border-color:var(--ember)}
+.tpl.on{border-color:var(--ember);background:#161b0e}
+.tpl b{font:900 20px/1 var(--display);text-transform:uppercase;letter-spacing:.03em;display:block}
+.tpl span{font:400 12px/1.4 var(--body);color:var(--dim)}
+.tpl i{font:500 11px/1 var(--mono);color:var(--dim);font-style:normal;white-space:nowrap}
+.tpl i.has{color:var(--ok)}
+.field{display:grid;gap:6px;min-width:0}
+.field label{font:500 10px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.field input,.field textarea,.field select{width:100%;background:var(--bg);border:1px solid var(--faint);padding:11px 12px;border-radius:0;font-size:14px}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--ember)}
+.fields3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.exrows{display:grid;gap:8px;margin:14px 0}
+.exrow{display:grid;grid-template-columns:32px 1.2fr 1.6fr .5fr .7fr .7fr 1.5fr 1.2fr 36px;gap:6px;align-items:center}
+.exrow input{width:100%;background:var(--bg);border:1px solid var(--faint);padding:9px 10px;border-radius:0;font-size:13px}
+.exrow input:focus{outline:none;border-color:var(--ember)}
+.exrow .h{font:500 9px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.exrow .drag{font:500 11px/1 var(--mono);color:var(--dim);display:grid;gap:2px}
+.exrow .drag button{background:none;border:1px solid var(--faint);color:var(--dim);cursor:pointer;padding:2px 5px;font-size:10px;line-height:1}
+.exrow .x{background:none;border:1px solid var(--faint);color:var(--dim);cursor:pointer;padding:8px 10px;font:500 11px/1 var(--mono)}
+.exrow .x:hover{color:#ff8a6b;border-color:#ff8a6b}
+@media (max-width:860px){.two{grid-template-columns:1fr}.dua{grid-template-columns:1fr}.fields3{grid-template-columns:1fr}.exrow{grid-template-columns:1fr 1fr;padding:10px 0;border-bottom:1px solid var(--faint)}.exrow .h{display:none}.exrow .drag{grid-auto-flow:column}.exrow input[data-k="block"]{visibility:visible!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="mark"><span>Sharaf</span><span class="ar" lang="ar">شرف</span><small>Command Post</small></div>
+  <div class="actions" id="topActions" hidden>
+    <button class="btn ghost" id="refresh" type="button">Refresh</button>
+    <button class="btn ghost" id="export" type="button">Export CSV</button>
+    <button class="btn ghost" id="lock" type="button">Lock</button>
+  </div>
+</header>
+
+<section class="gate" id="gate">
+  <form id="gateForm" novalidate>
+    <div class="label">Enter the Command Post code</div>
+    <input id="code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" aria-label="Command Post code">
+    <button class="btn" type="submit" id="go">Open</button>
+    <div class="msg" id="gateMsg" role="status"></div>
+    <p class="note">This page shows private contact info for everyone in the unit. Keep the code between Sean and his team.</p>
+  </form>
+</section>
+
+<main id="app" hidden>
+  <nav class="cpnav"><a href="#unit" class="on" data-v="unit">The unit</a><a href="#lockin" data-v="lockin">The Lock In</a></nav>
+  <div id="v-unit">
+  <div class="grid tiles">
+    <div class="tile lead"><div class="label">In the unit</div><b id="t-total">0</b></div>
+    <div class="tile"><div class="label">Last 24 hours</div><b id="t-today">0</b></div>
+    <div class="tile"><div class="label">Last 7 days</div><b id="t-week">0</b></div>
+    <div class="tile"><div class="label">Fight night texts</div><b id="t-sms">0</b></div>
+    <div class="tile"><div class="label">With email</div><b id="t-email">0</b></div>
+  </div>
+
+  <div class="grid two">
+    <div class="panel"><div class="label">Enlistments per day · last 14 days (Pacific)</div><div class="bars" id="bars"></div><div class="days" id="days"></div></div>
+    <div class="panel"><div class="label">Top cities</div><ul class="cities" id="cities"></ul></div>
+  </div>
+
+  <h2>The corner <span class="label" id="approvedCount"></span></h2>
+  <div class="queue" id="queue"></div>
+
+  <div class="roster-head">
+    <h2 style="margin:0">The roster</h2>
+    <input class="search" id="search" type="search" placeholder="Search name, city or email" aria-label="Search the roster">
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>No.</th><th>Name</th><th>City</th><th>Email</th><th>Phone</th><th>Texts</th><th>Enlisted</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+  <div class="more"><button class="btn ghost" id="moreBtn" type="button" hidden>Load more</button> <span class="note" id="rowCount"></span></div>
+  </div>
+
+  <div id="v-lockin" hidden>
+    <div class="grid tiles">
+      <div class="tile lead"><div class="label">In The Lock In</div><b id="l-members">0</b></div>
+      <div class="tile"><div class="label">Locked in today</div><b id="l-today">0</b></div>
+      <div class="tile"><div class="label">Active this week</div><b id="l-week">0</b></div>
+    </div>
+
+    <h2>The program</h2>
+    <p class="note" style="margin-bottom:14px">Seven days. Mon Hands, Tue Iron, Wed Roadwork, Thu Grapple, Fri Power, Sat Camp, Sun Recover. A and B alternate week to week. Home versions show for members who train without a gym. Pick a day, add the work, save.</p>
+    <div class="label" style="margin-bottom:8px">Gym</div><div class="tpls" id="tplGym"></div>
+    <div class="label" style="margin:18px 0 8px">Home</div><div class="tpls" id="tplHome"></div>
+    <div class="panel" id="editor" style="margin-top:18px"><p class="note">Pick a day above.</p></div>
+
+    <h2 style="margin-top:34px">Swap a day</h2>
+    <p class="note" style="margin-bottom:12px">Use this for a one-off: a sparring day, a day off before a fight, a note the unit sees that morning. Pick the date, pick the work, or write a note only.</p>
+    <form class="panel" id="ovForm" style="max-width:720px">
+      <div class="fields3"><div class="field"><label for="ovDay">Date</label><input id="ovDay" type="date" required></div>
+      <div class="field"><label for="ovTpl">Work</label><select id="ovTpl"><option value="">Keep the schedule</option></select></div>
+      <div class="field"><label for="ovNote">Note to the unit</label><input id="ovNote" maxlength="200" placeholder="Optional"></div></div>
+      <div class="actions"><button class="btn" type="submit">Save swap</button><button class="btn ghost" type="button" id="ovClear">Clear this date</button></div>
+      <div class="msg" id="ovMsg" role="status"></div>
+      <div id="ovList" class="note"></div>
+    </form>
+
+    <h2 style="margin-top:34px">Fight night</h2>
+    <form class="panel" id="fightForm" style="max-width:720px">
+      <div class="fields3"><div class="field"><label for="fOpp">Opponent</label><input id="fOpp" maxlength="60"></div>
+      <div class="field"><label for="fDate">Date and time (local)</label><input id="fDate" type="datetime-local"></div>
+      <div class="field"><label for="fEvent">Event</label><input id="fEvent" maxlength="60" placeholder="UFC 3xx"></div></div>
+      <div class="fields3"><div class="field"><label for="fVenue">Venue, city</label><input id="fVenue" maxlength="80"></div>
+      <div class="field" style="grid-column:span 2"><label for="fNote">Note from Sean</label><input id="fNote" maxlength="300" placeholder="Optional, shows under the countdown"></div></div>
+      <div class="actions"><button class="btn" type="submit">Save fight</button><button class="btn ghost" type="button" id="fClear">No fight booked</button></div>
+      <div class="msg" id="fMsg" role="status"></div>
+    </form>
+
+    <div class="roster-head" style="margin-top:34px">
+      <h2 style="margin:0">Lock In members</h2>
+      <input class="search" id="lsearch" type="search" placeholder="Search name, city or email" aria-label="Search Lock In members">
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Tag</th><th>Name</th><th>City</th><th>Email</th><th>Trains</th><th>Streak</th><th>Days</th><th>Last seen</th><th>Joined</th></tr></thead>
+      <tbody id="lrows"></tbody>
+    </table></div>
+    <div class="more"><span class="note" id="lcount"></span></div>
+  </div>
+</main>
+
+<script>
+const SB="https://dajllojejbxapqlxurdb.supabase.co",KEY="sb_publishable_ev9knQozkf3dwwtR56QE_A_g5APlZnn";
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(6,"0");
+const when=d=>new Date(d).toLocaleString([], {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+let CODE="";try{CODE=sessionStorage.getItem("cp-code")||"";}catch(e){}
+async function rpc(fn,body){const r=await fetch(`${SB}/rest/v1/rpc/${fn}`,{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const t=await r.text();let j=null;try{j=t?JSON.parse(t):null;}catch(e){}
+  if(!r.ok)throw new Error((j&&j.message)||"Could not reach the database. Try again.");
+  if(j&&j.error)throw new Error(j.error);return j;}
+
+async function open(code){const o=await rpc("cp_overview",{p_code:code});CODE=code;try{sessionStorage.setItem("cp-code",code);}catch(e){}
+  $("gate").hidden=true;$("app").hidden=false;$("topActions").hidden=false;render(o);loadRows(true);if(location.hash==="#lockin")showView("lockin");}
+$("gateForm").addEventListener("submit",async e=>{e.preventDefault();const c=$("code").value.trim().toUpperCase();if(!c)return;
+  $("go").disabled=true;$("gateMsg").textContent="";try{await open(c);}catch(err){$("gateMsg").textContent=err.message;}finally{$("go").disabled=false;}});
+$("lock").addEventListener("click",()=>{try{sessionStorage.removeItem("cp-code");}catch(e){}location.reload();});
+
+function render(o){$("t-total").textContent=Number(o.total).toLocaleString();$("t-today").textContent=Number(o.today).toLocaleString();
+  $("t-week").textContent=Number(o.week).toLocaleString();$("t-sms").textContent=Number(o.sms).toLocaleString();$("t-email").textContent=Number(o.with_email).toLocaleString();
+  const max=Math.max(1,...o.daily.map(d=>d.n));
+  $("bars").innerHTML=o.daily.map(d=>`<div class="bar" style="height:${Math.max(1,d.n/max*100)}%" title="${d.day}: ${d.n}"><span>${d.n||""}</span></div>`).join("");
+  $("days").innerHTML=o.daily.map(d=>`<span>${d.day.slice(8)}</span>`).join("");
+  $("cities").innerHTML=o.cities.length?o.cities.map(c=>`<li><span>${esc(c.city)}</span><b>${c.n}</b></li>`).join(""):`<li class="empty">No enlistments yet.</li>`;
+  $("approvedCount").textContent=`· ${o.approved_duas} on the wall · ${o.pending_duas.length} waiting`;
+  $("queue").innerHTML=o.pending_duas.length?o.pending_duas.map(d=>`<div class="dua" data-id="${d.id}"><div><p>${esc(d.message)}</p><div class="who">${esc(d.name)}${d.city?" · "+esc(d.city):""} · ${when(d.created_at)}</div></div>
+    <div class="actions"><button class="btn ok" data-act="approved">Put on wall</button><button class="btn ghost" data-act="hidden">Hide</button></div></div>`).join(""):`<p class="empty">No messages waiting. New du'as land here for review before they show on the site.</p>`;}
+
+$("queue").addEventListener("click",async e=>{const b=e.target.closest("button[data-act]");if(!b)return;const card=b.closest(".dua");
+  card.querySelectorAll("button").forEach(x=>x.disabled=true);
+  try{const ok=await rpc("cp_moderate_dua",{p_code:CODE,p_id:+card.dataset.id,p_status:b.dataset.act});if(!ok)throw new Error("That didn't save. Refresh and try again.");
+    card.remove();refresh();}catch(err){alert(err.message);card.querySelectorAll("button").forEach(x=>x.disabled=false);}});
+
+let offset=0,searchQ="";const PAGE=100;
+async function loadRows(reset){if(reset){offset=0;$("rows").innerHTML="";}
+  const r=await rpc("cp_members",{p_code:CODE,p_search:searchQ||null,p_limit:PAGE,p_offset:offset});
+  $("rows").insertAdjacentHTML("beforeend",r.rows.map(m=>`<tr><td class="num">${pad(m.num)}</td><td>${esc(m.name)}</td><td>${esc(m.city)}</td><td>${esc(m.email)}</td><td>${esc(m.phone)}</td><td class="sms">${m.sms_consent?"YES":""}</td><td>${when(m.created_at)}</td></tr>`).join(""));
+  offset+=r.rows.length;$("moreBtn").hidden=offset>=r.count;$("rowCount").textContent=`${offset} of ${r.count}`;
+  if(!r.count)$("rows").innerHTML=`<tr><td colspan="7" class="empty">${searchQ?"No one matches that search.":"No one has enlisted yet. Share the site and they will show up here."}</td></tr>`;}
+$("moreBtn").addEventListener("click",()=>loadRows(false));
+let st;$("search").addEventListener("input",e=>{clearTimeout(st);st=setTimeout(()=>{searchQ=e.target.value.trim();loadRows(true);},300);});
+async function refresh(){try{render(await rpc("cp_overview",{p_code:CODE}));}catch(e){}}
+$("refresh").addEventListener("click",()=>{refresh();loadRows(true);if(L.loaded)loadLockin();});
+
+$("export").addEventListener("click",async()=>{const b=$("export");b.disabled=true;b.textContent="Exporting";
+  try{let all=[],off=0;for(;;){const r=await rpc("cp_members",{p_code:CODE,p_search:null,p_limit:5000,p_offset:off});all=all.concat(r.rows);off+=r.rows.length;if(off>=r.count||!r.rows.length)break;}
+    const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+    const csv=["number,name,city,email,phone,fight_night_texts,enlisted_at"].concat(all.map(m=>[pad(m.num),m.name,m.city,m.email,m.phone,m.sms_consent?"yes":"no",m.created_at].map(q).join(","))).join("\n");
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`sharaf-unit-${new Date().toISOString().slice(0,10)}.csv`;a.click();}
+  catch(err){alert(err.message);}finally{b.disabled=false;b.textContent="Export CSV";}});
+
+/* ===== views ===== */
+function showView(v){document.querySelectorAll(".cpnav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v));$("v-unit").hidden=v!=="unit";$("v-lockin").hidden=v!=="lockin";$("export").hidden=v!=="unit";if(v==="lockin"&&!L.loaded)loadLockin();}
+document.querySelectorAll(".cpnav a").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();location.hash=a.dataset.v;showView(a.dataset.v);}));
+
+/* ===== The Lock In ===== */
+const L={loaded:false,o:null,cur:null};
+const FOCUS_ORDER=["hands","iron","roadwork","grapple","power","camp","recover"];
+async function loadLockin(){try{L.o=await rpc("cp_lockin_overview",{p_code:CODE});L.loaded=true;renderLockin();loadLrows();}catch(e){$("editor").innerHTML=`<p class="msg">${esc(e.message)}</p>`;}}
+function renderLockin(){const o=L.o;$("l-members").textContent=o.members;$("l-today").textContent=o.active_today;$("l-week").textContent=o.active_week;
+  const card=t=>`<button type="button" class="tpl ${L.cur&&L.cur.id===t.id?"on":""}" data-id="${t.id}"><div><b>${esc(t.title)}</b><span>${esc(t.subtitle||"")}</span></div><i class="${t.exercises.length?"has":""}">${t.exercises.length?t.exercises.length+" exercises":"empty"}</i></button>`;
+  $("tplGym").innerHTML=o.templates.filter(t=>t.mode==="gym").map(card).join("");$("tplHome").innerHTML=o.templates.filter(t=>t.mode==="home").map(card).join("");
+  $("ovTpl").innerHTML=`<option value="">Keep the schedule</option>`+o.templates.map(t=>`<option value="${t.id}">${esc(t.title)}${t.mode==="home"?" (home)":""}</option>`).join("");
+  $("ovList").innerHTML=o.overrides.length?"Swaps on the books: "+o.overrides.map(x=>{const t=o.templates.find(t=>t.id===x.template_id);return `${x.day} → ${t?esc(t.title):"schedule"}${x.note?" · "+esc(x.note):""}`;}).join(" · "):"No swaps on the books.";
+  const f=o.fight||{};$("fOpp").value=f.opponent||"";$("fEvent").value=f.event||"";$("fVenue").value=f.venue||"";$("fNote").value=f.note||"";
+  $("fDate").value=f.date?toLocalInput(f.date):"";
+  if(!$("ovDay").value)$("ovDay").value=new Date().toISOString().slice(0,10);}
+function toLocalInput(iso){const d=new Date(iso);if(isNaN(d))return"";const z=new Date(d.getTime()-d.getTimezoneOffset()*60000);return z.toISOString().slice(0,16);}
+document.addEventListener("click",e=>{const b=e.target.closest(".tpl");if(!b)return;L.cur=L.o.templates.find(t=>t.id===+b.dataset.id);renderLockin();renderEditor();});
+function exRow(x,i){x=x||{};return `<div class="exrow" data-i="${i}">
+  <div class="drag"><button type="button" data-mv="-1" aria-label="Move up">&uarr;</button><button type="button" data-mv="1" aria-label="Move down">&darr;</button></div>
+  <input data-k="block" placeholder="Block label" value="${x._show||!x.name?esc(x.block):""}" ${x._show||!x.name?"":'style="visibility:hidden"'}><input data-k="name" placeholder="Exercise" value="${esc(x.name)}"><input data-k="sets" placeholder="Sets" value="${esc(x.sets)}"><input data-k="reps" placeholder="Reps or time" value="${esc(x.reps)}"><input data-k="rest" placeholder="Rest" value="${esc(x.rest)}"><input data-k="notes" placeholder="Coaching note" value="${esc(x.notes)}"><input data-k="video_url" placeholder="Video link" value="${esc(x.video_url)}">
+  <button type="button" class="x" aria-label="Remove">&times;</button></div>`;}
+function renderEditor(){const t=L.cur;if(!t)return;
+  $("editor").innerHTML=`<div class="label">${esc(t.mode==="home"?"Home version":"Gym")} · ${esc(t.focus)} ${t.variant.toUpperCase()}</div>
+    <div class="fields3" style="margin-top:12px"><div class="field"><label for="eTitle">Title</label><input id="eTitle" value="${esc(t.title)}"></div><div class="field"><label for="eSub">Subtitle</label><input id="eSub" value="${esc(t.subtitle||"")}"></div><div class="field"><label for="eMin">Minutes</label><input id="eMin" inputmode="numeric" value="${t.minutes??""}"></div></div>
+    <div class="field"><label for="eBrief">Sean's brief for this day (members read this at the top)</label><textarea id="eBrief" rows="3">${esc(t.brief||"")}</textarea></div>
+    <div class="label" style="margin-top:16px">Exercises, in order. A block label (Warm up, Main, Finisher) groups the rows under it.</div>
+    <div class="exrows" id="exrows"><div class="exrow"><span></span><span class="h">Block</span><span class="h">Exercise</span><span class="h">Sets</span><span class="h">Reps / time</span><span class="h">Rest</span><span class="h">Coaching note</span><span class="h">Video link</span><span></span></div>${t.exercises.map((x,i,arr)=>exRow(Object.assign({},x,{_show:!!x.block&&(i===0||arr[i-1].block!==x.block)}),i)).join("")}</div>
+    <div class="actions"><button type="button" class="btn ghost" id="addEx">Add exercise</button><button type="button" class="btn ghost" id="addBlock">Add block label</button><button type="button" class="btn" id="saveTpl">Save this day</button></div>
+    <div class="msg" id="eMsg" role="status"></div>`;
+  const rows=$("exrows");
+  $("addEx").onclick=()=>{rows.insertAdjacentHTML("beforeend",exRow({},rows.children.length-1));rows.lastElementChild.querySelector("input").focus();};
+  $("addBlock").onclick=()=>{rows.insertAdjacentHTML("beforeend",exRow({},rows.children.length-1));const r=rows.lastElementChild;const bi=r.querySelector('[data-k="block"]');bi.placeholder="Warm up / Main / Finisher";r.querySelector('[data-k="name"]').placeholder="First exercise in this block";bi.focus();};
+  rows.addEventListener("click",e=>{const r=e.target.closest(".exrow");if(!r||!r.dataset.i)return;
+    if(e.target.closest(".x")){r.remove();return;}
+    const mv=e.target.closest("[data-mv]");if(mv){const d=+mv.dataset.mv;const sib=d<0?r.previousElementSibling:r.nextElementSibling;if(sib&&sib.dataset.i!==undefined){d<0?rows.insertBefore(r,sib):rows.insertBefore(sib,r);}}});
+  $("saveTpl").onclick=async()=>{const m=$("eMsg");m.textContent="Saving";const b=$("saveTpl");b.disabled=true;
+    const ex=[...rows.querySelectorAll(".exrow[data-i]")].map(r=>{const o={};r.querySelectorAll("input").forEach(i=>o[i.dataset.k]=i.value);return o;}).filter(o=>o.name.trim());
+    // carry block labels forward so each row under a label gets it
+    let cur=null;ex.forEach(o=>{if(o.block&&o.block.trim())cur=o.block.trim();o.block=cur;});
+    try{const r=await rpc("cp_lockin_save_template",{p_code:CODE,p_id:t.id,p_title:$("eTitle").value,p_subtitle:$("eSub").value,p_brief:$("eBrief").value,p_minutes:parseInt($("eMin").value)||null,p_exercises:ex});
+      m.textContent=`Saved. ${r.count} exercises. Members see this on the next ${esc(t.title)} day.`;L.o=await rpc("cp_lockin_overview",{p_code:CODE});L.cur=L.o.templates.find(x=>x.id===t.id);renderLockin();renderEditor();$("eMsg").textContent=`Saved. ${r.count} exercises.`;}
+    catch(e){m.textContent=e.message;}finally{b.disabled=false;}};}
+$("ovForm").addEventListener("submit",async e=>{e.preventDefault();const m=$("ovMsg");try{await rpc("cp_lockin_override",{p_code:CODE,p_day:$("ovDay").value,p_template_id:$("ovTpl").value?+$("ovTpl").value:null,p_note:$("ovNote").value});m.textContent="Saved.";L.o=await rpc("cp_lockin_overview",{p_code:CODE});renderLockin();}catch(err){m.textContent=err.message;}});
+$("ovClear").onclick=async()=>{const m=$("ovMsg");try{await rpc("cp_lockin_override",{p_code:CODE,p_day:$("ovDay").value,p_template_id:null,p_note:""});m.textContent="Cleared. That date follows the schedule.";$("ovNote").value="";$("ovTpl").value="";L.o=await rpc("cp_lockin_overview",{p_code:CODE});renderLockin();}catch(err){m.textContent=err.message;}};
+$("fightForm").addEventListener("submit",async e=>{e.preventDefault();const m=$("fMsg");const dl=$("fDate").value;
+  try{await rpc("cp_lockin_set_fight",{p_code:CODE,p_fight:{opponent:$("fOpp").value,date:dl?new Date(dl).toISOString():"",event:$("fEvent").value,venue:$("fVenue").value,note:$("fNote").value}});m.textContent="Saved. The countdown is live in the app.";}catch(err){m.textContent=err.message;}});
+$("fClear").onclick=async()=>{const m=$("fMsg");try{await rpc("cp_lockin_set_fight",{p_code:CODE,p_fight:{}});["fOpp","fDate","fEvent","fVenue","fNote"].forEach(i=>$(i).value="");m.textContent="Cleared. The app says no fight booked.";}catch(err){m.textContent=err.message;}};
+let lq="",lst;$("lsearch").addEventListener("input",e=>{clearTimeout(lst);lst=setTimeout(()=>{lq=e.target.value.trim();loadLrows();},300);});
+async function loadLrows(){try{const r=await rpc("cp_lockin_members",{p_code:CODE,p_search:lq||null,p_limit:500,p_offset:0});
+  $("lrows").innerHTML=r.rows.length?r.rows.map(m=>`<tr><td class="num">${m.tag_num?pad(m.tag_num):""}</td><td>${esc(m.name)}</td><td>${esc(m.city)}</td><td>${esc(m.email)}</td><td>${esc(m.mode)}</td><td class="sms">${m.streak||0}</td><td>${m.locked}</td><td>${m.last_seen?when(m.last_seen):""}</td><td>${when(m.created_at)}</td></tr>`).join(""):`<tr><td colspan="9" class="empty">${lq?"No one matches.":"Nobody in The Lock In yet."}</td></tr>`;
+  $("lcount").textContent=`${r.rows.length} of ${r.count}`;}catch(e){$("lrows").innerHTML=`<tr><td colspan="9" class="empty">${esc(e.message)}</td></tr>`;}}
+
+if(CODE)open(CODE).then(()=>{if(location.hash==="#lockin")showView("lockin");}).catch(()=>{try{sessionStorage.removeItem("cp-code");}catch(e){}});
+setInterval(()=>{if(CODE&&!$("app").hidden)refresh();},60000);
+</script>
+</body>
+</html>
