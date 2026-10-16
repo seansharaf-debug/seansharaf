@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sean "The Smoke" Sharaf · Enlist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Marine. Son of a Jerusalem refugee. Twelve seconds at UFC 331. Enlist in the unit and get your tag.">
+<meta property="og:title" content="Sean &quot;The Smoke&quot; Sharaf">
+<meta property="og:description" content="Twelve seconds took twelve years. Enlist in the unit and get your tag.">
+<meta name="theme-color" content="#0a0c07">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@300;400;600&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one fixed smoke canvas, six pinned chapters, headline low-left, story low-right, smoke on the open side. Single dark world by choice. */
+:root{color-scheme:dark;
+  --bg:#0b0e07;--ink:#ebe7d6;--dim:rgba(235,231,214,.62);--faint:rgba(167,180,120,.2);
+  --od:#6f7d3c;--od-hi:#8f9e52;--ember:#ff5a24;--steel:#b9b8a2;--glass:rgba(16,20,11,.66);
+  --display:"Big Shoulders Display","Impact","Arial Narrow",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --body:"Manrope",system-ui,sans-serif;
+  --arabic:"Reem Kufi","Noto Kufi Arabic","Geeza Pro",serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+#gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+#halo{position:fixed;inset:0;z-index:0;pointer-events:none;transition:background 1.2s ease}
+#grid{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.8;
+  background-image:linear-gradient(rgba(143,158,82,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(143,158,82,.06) 1px,transparent 1px);
+  background-size:72px 72px;-webkit-mask-image:radial-gradient(ellipse at 60% 45%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 60% 45%,#000 20%,transparent 75%)}
+#flash{position:fixed;inset:0;z-index:20;pointer-events:none;background:#fff;opacity:0}
+#flash.go{animation:flash .9s ease-out}
+@keyframes flash{0%{opacity:.92}100%{opacity:0}}
+body.shake main{animation:shake .45s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shake{10%,90%{transform:translate(-2px,1px)}20%,80%{transform:translate(4px,-2px)}30%,50%,70%{transform:translate(-7px,3px)}40%,60%{transform:translate(7px,-3px)}}
+.grain{position:fixed;inset:-50%;z-index:1;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
+.nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:calc(18px + env(safe-area-inset-top,0px)) 28px 18px;gap:16px}
+.mark{display:flex;align-items:baseline;gap:12px;font:900 22px/1 var(--display);letter-spacing:.06em;text-transform:uppercase}
+.mark .ar{font:700 20px/1 var(--arabic);color:var(--ember)}
+.btn{display:inline-flex;align-items:center;justify-content:center;font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;padding:15px 18px;background:var(--ink);color:var(--bg);border:0;cursor:pointer;transition:background .25s,color .25s,transform .25s}
+.btn:hover,.btn:focus-visible{background:var(--od-hi);color:#0a0c07;transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--faint)}
+.btn.small{padding:11px 14px}
+:focus-visible{outline:2px solid var(--od-hi);outline-offset:3px}
+.rail{position:fixed;right:28px;top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;gap:12px;text-align:right;pointer-events:none;transition:opacity .6s}
+.rail span{font:400 11px/1 var(--mono);letter-spacing:.16em;color:var(--faint);transition:color .6s,transform .6s}
+.rail span.hot{color:var(--ink);transform:translateX(-6px)}
+body.no-rail .rail,body.in-mother .rail,body.in-mother .prog{opacity:0}
+.prog{transition:opacity .6s}
+.prog{position:fixed;left:28px;top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;gap:10px}
+.prog i{display:block;width:2px;height:22px;background:var(--faint);transition:background .5s,height .5s}
+.prog i.on{background:var(--od-hi);height:40px}
+main{position:relative;z-index:3}
+.scene{position:relative;min-height:130vh;padding:0 clamp(20px,7vw,120px)}
+.scene:first-child{min-height:110vh}
+.pin{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:32px;padding:120px 0 9vh}
+.label{font:500 11px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim);display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+.label b{font-weight:500;color:var(--od-hi)}
+h1,h2{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.86;letter-spacing:.005em;text-wrap:balance}
+h1{font-size:clamp(76px,11vw,196px)}h2{font-size:clamp(58px,7.6vw,136px)}
+.line{display:block;overflow:hidden;padding-bottom:.04em}
+.line>span{display:inline-block;transform:translateY(110%);transition:transform 1.1s cubic-bezier(.19,1,.22,1)}
+.in .line>span{transform:none}
+.in .line:nth-child(2)>span{transition-delay:.08s}.in .line:nth-child(3)>span{transition-delay:.16s}
+.fade{opacity:0;transform:translateY(22px);transition:opacity 1s ease .25s,transform 1s cubic-bezier(.19,1,.22,1) .25s}
+.in .fade{opacity:1;transform:none}
+.lead{font:300 clamp(15px,1.2vw,18px)/1.65 var(--body);color:var(--dim);max-width:40ch;margin-top:24px}
+.lead strong{color:var(--ink);font-weight:600}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.right{justify-self:end;max-width:44ch;min-width:0}
+.story{font:300 clamp(15px,1.15vw,18px)/1.7 var(--body);color:var(--dim)}
+.story p+p{margin-top:14px}
+.story em{font-style:normal;color:var(--ink);font-weight:600}
+.term{color:var(--ember);font-weight:600}
+.log{list-style:none;display:grid;gap:0;border-top:1px solid var(--faint)}
+.log li{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:13px 0;border-bottom:1px solid var(--faint);font:300 15px/1.5 var(--body);color:var(--dim)}
+.log li b{font:500 12px/1.9 var(--mono);color:var(--ink);letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.ba{display:flex;gap:8px;margin-top:10px}
+.ba img{width:92px;height:auto;aspect-ratio:3/4;object-fit:cover;border:1px solid var(--faint);filter:saturate(.85)}
+h2.marine{font-size:clamp(44px,6.4vw,112px)}
+.clock{font:900 clamp(110px,17vw,300px)/.8 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--ink);transition:color .2s}
+.clock.hit{color:var(--ember)}
+.clock-sub{font:500 11px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-top:14px}
+.ar-big{font:700 clamp(30px,3vw,46px)/1.2 var(--arabic);color:var(--ember);margin-bottom:8px}
+#s5{min-height:auto;padding-bottom:12vh}
+#s5 .pin{position:relative;height:auto;min-height:100vh;align-items:center;grid-template-columns:1.1fr .9fr}
+.enlist{display:grid;gap:12px;margin-top:28px;max-width:460px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:grid;gap:7px;min-width:0}
+.field label{font:500 10px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.field input{width:100%;font:400 16px/1.2 var(--body);color:var(--ink);background:var(--glass);border:1px solid var(--faint);padding:14px 14px;backdrop-filter:blur(10px);border-radius:0}
+.field input:focus{outline:none;border-color:var(--od-hi)}
+.note{font:400 11px/1.6 var(--mono);color:var(--dim);letter-spacing:.04em;max-width:52ch}
+.ok{font:500 12px/1.6 var(--mono);color:var(--ember);letter-spacing:.06em;min-height:1.6em}
+/* the dog tag */
+.tagwrap{justify-self:center;perspective:900px;display:grid;gap:18px;justify-items:center}
+.tag{width:min(300px,78vw);aspect-ratio:2/3.05;max-width:100%;position:relative;border-radius:26px;padding:56px 26px 26px;
+  background:linear-gradient(135deg,#d9dce1 0%,#8d929b 38%,#c9cdd3 55%,#6e737c 100%);color:#1b1d22;
+  box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.7),inset 0 -2px 6px rgba(0,0,0,.35);
+  transform:rotateX(8deg) rotateY(-14deg);transition:transform .8s cubic-bezier(.19,1,.22,1)}
+.tag:hover{transform:rotateX(0) rotateY(0)}
+.tag::before{content:"";position:absolute;top:18px;left:50%;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:var(--bg);box-shadow:inset 0 2px 3px rgba(0,0,0,.6)}
+.tag::after{content:"";position:absolute;inset:0;border-radius:26px;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.35) 45%,transparent 60%);mix-blend-mode:overlay;pointer-events:none}
+.tag .t{font:500 15px/1.75 var(--mono);letter-spacing:.12em;text-transform:uppercase;text-shadow:0 1px 0 rgba(255,255,255,.45),0 -1px 0 rgba(0,0,0,.25);overflow-wrap:anywhere}
+.tag .t.n{font:900 44px/1 var(--display);letter-spacing:.04em;margin-top:14px;font-variant-numeric:tabular-nums}
+.tag .t.s{margin-top:16px;font-size:11px;opacity:.75}
+.tag .ar{position:absolute;bottom:22px;right:24px;font:700 26px/1 var(--arabic);opacity:.55}
+.tag.stamp{animation:stamp .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stamp{0%{transform:rotateX(0) rotateY(0) scale(1.08)}100%{transform:rotateX(8deg) rotateY(-14deg) scale(1)}}
+.tagcap{font:500 10px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim);text-align:center}
+.count-pill{color:var(--ink)}
+.unit-count{font:500 12px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--od-hi);margin-top:16px}
+.check{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;font:300 13px/1.55 var(--body);color:var(--dim);cursor:pointer}
+.check input{width:18px;height:18px;margin-top:2px;accent-color:var(--od)}
+.btn[disabled]{opacity:.55;cursor:wait;transform:none}
+.err{color:#ff8a6b}
+.lockin-band{position:relative;z-index:3;background:linear-gradient(180deg,var(--bg),#0d1009);border-top:1px solid var(--faint);padding:14vh clamp(20px,7vw,120px) 12vh}
+.lockin-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.lockin-inner > *{min-width:0}
+.week{list-style:none;display:grid;gap:0;border-top:1px solid var(--faint)}
+.week li{display:grid;grid-template-columns:54px 1fr auto;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--faint)}
+.week b{font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--od-hi)}
+.week span{font:900 clamp(22px,2.2vw,30px)/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.week i{font:300 13px/1.4 var(--body);color:var(--dim);font-style:normal;text-align:right}
+@media (max-width:860px){.lockin-inner{grid-template-columns:1fr;gap:32px}.lockin-band{padding-top:10vh}}
+.corner{position:relative;z-index:3;background:linear-gradient(180deg,#0d1009,var(--bg) 40%);border-top:1px solid var(--faint);padding:14vh clamp(20px,7vw,120px) 10vh;display:grid;gap:56px}
+.corner-head{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end}
+.corner-head > *{min-width:0}
+.dua-form{display:grid;gap:12px}
+.field textarea{width:100%;font:400 16px/1.5 var(--body);color:var(--ink);background:var(--glass);border:1px solid var(--faint);padding:14px;resize:vertical;border-radius:0}
+.field textarea:focus{outline:none;border-color:var(--od-hi)}
+.wall{columns:3 280px;column-gap:18px}
+.dua{break-inside:avoid;margin:0 0 18px;padding:20px 20px 16px;border:1px solid var(--faint);background:linear-gradient(180deg,rgba(111,125,60,.12),transparent 60%)}
+.dua p{font:300 16px/1.6 var(--body);color:var(--ink);overflow-wrap:anywhere}
+.dua footer,.dua .who{all:unset;display:block;margin-top:12px;font:500 10px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.wall-empty{column-span:all}
+@media (max-width:860px){.corner-head{grid-template-columns:1fr}.corner{padding-top:10vh}}
+.mother{min-height:320vh}
+.m-pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;padding:90px 0 6vh}
+.m-line{opacity:.08;transform:translateY(10px);transition:opacity 1.2s ease,transform 1.2s cubic-bezier(.19,1,.22,1),color 1.2s;max-width:30ch}
+.m-line.on{opacity:1;transform:none}
+.m-q{font:300 clamp(17px,1.6vw,22px)/1.55 var(--body);color:var(--dim);max-width:44ch;margin-bottom:18px}
+.saw{font-family:var(--arabic);color:var(--ember)}
+.m-a{font:900 clamp(44px,6.4vw,104px)/.95 var(--display);text-transform:uppercase;display:flex;align-items:baseline;gap:.35em;flex-wrap:wrap;justify-content:center}
+.m-a:nth-of-type(2).on{color:rgba(235,231,214,.72)}.m-a:nth-of-type(4).on{color:rgba(235,231,214,.86)}.m-a:nth-of-type(6).on{color:var(--ink);text-shadow:0 0 40px rgba(255,74,28,.35)}
+.m-ar{font:700 .42em/1 var(--arabic);color:var(--ember);text-transform:none}
+.m-ask{font:500 11px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.m-f{font:700 clamp(24px,2.6vw,40px)/1 var(--display);text-transform:uppercase;color:var(--dim);margin-top:12px}
+.m-src{font:400 11px/1.6 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:22px}
+@media (max-width:860px){.mother{padding:0 16px}.m-pin{gap:6px}}
+@media (prefers-reduced-motion:reduce){.m-line{opacity:1;transform:none;transition:none}}
+footer{position:relative;z-index:3;padding:48px clamp(20px,7vw,120px) 40px;border-top:1px solid var(--faint);background:var(--bg);display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}
+footer .fine{font:400 11px/1.6 var(--mono);color:var(--dim);max-width:60ch}
+@media (min-width:861px){#s0 .pin{grid-template-columns:1.25fr .75fr}.hero-line{white-space:nowrap}}
+@media (max-width:860px){
+  .ba img{width:72px}.log li{padding:9px 0;font-size:14px}
+  .rail,.prog{display:none}.nav{padding-inline:16px}.nav .btn.ghost{display:none}
+  .scene{padding:0 16px;min-height:150vh}
+  .pin{grid-template-columns:1fr;align-content:end;gap:22px;padding:90px 0 6vh}
+  .pin::before{content:"";position:absolute;left:-16px;right:-16px;bottom:0;height:64%;background:linear-gradient(transparent,rgba(7,7,10,.9) 34%);z-index:-1}
+  .right{justify-self:start}
+  #s5 .pin{grid-template-columns:1fr;padding-top:52vh}
+  #s5 .pin::before{height:100%;background:linear-gradient(transparent 0,rgba(7,7,10,.92) 40%)}
+  .row{grid-template-columns:1fr}
+  .clock{font-size:clamp(110px,34vw,200px)}
+}
+@media (prefers-reduced-motion:reduce){.grain{animation:none}.line>span,.fade{transition:none;transform:none;opacity:1}body.shake main{animation:none}#flash.go{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas><div id="grid"></div><div id="halo"></div><div class="grain"></div><div id="flash"></div>
+
+<header class="nav">
+  <a class="mark" href="#s0"><span>Sharaf</span><span class="ar" lang="ar">شرف</span></a>
+  <div class="cta" style="margin:0"><a class="btn ghost small" href="lockin/">The Lock In</a><a class="btn small" href="#s5">Enlist</a></div>
+</header>
+<div class="prog" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+<div class="rail" aria-hidden="true">
+  <span data-k="0">HONOR</span><span data-k="1">JERUSALEM</span><span data-k="2">2013</span><span data-k="3">0:12</span><span data-k="4">SUJUD</span><span data-k="5">THE UNIT</span>
+</div>
+
+<main>
+  <section class="scene" id="s0" data-i="0"><div class="pin in">
+    <div>
+      <div class="label"><span>UFC Heavyweight</span><span>Santa Ana, CA</span><span class="count-pill" hidden id="hero-count"></span><b>01 / 06</b></div>
+      <h1><span class="line"><span class="hero-line">Sean</span></span><span class="line"><span class="hero-line">Sharaf</span></span></h1>
+      <p class="lead fade">Sharaf means <strong>honor</strong> in Arabic. United States Marine. Son of a Jerusalem refugee. Five pro wins, every one of them in the first round.</p>
+      <div class="cta fade"><a class="btn" href="#s5">Enlist in the unit</a><a class="btn ghost" href="#s1">Walk the road</a></div>
+    </div>
+    <div></div>
+  </div></section>
+
+  <section class="scene" id="s1" data-i="1"><div class="pin">
+    <div>
+      <div class="label"><span>Jerusalem to Santa Ana</span><b>02 / 06</b></div>
+      <h2><span class="line"><span>The road</span></span><span class="line"><span>starts in</span></span><span class="line"><span>Jerusalem</span></span></h2>
+    </div>
+    <div class="right story fade">
+      <p>His father came to America from Jerusalem as a refugee.</p>
+      <p><em>"My blood is Palestinian. My father is from Jerusalem."</em> Sean said it at UFC 331 media day, and he said why he fights: to represent his people.</p>
+    </div>
+  </div></section>
+
+  <section class="scene" id="s2" data-i="2"><div class="pin">
+    <div>
+      <div class="label"><span>Camp Pendleton</span><b>03 / 06</b></div>
+      <h2 class="marine"><span class="line"><span>Six years</span></span><span class="line"><span>a United</span></span><span class="line"><span>States Marine</span></span></h2>
+    </div>
+    <ol class="right log fade">
+      <li><b>2012</b><span>Loses 70 pounds to join the Marines.<span class="ba"><img src="img/2012-before.jpg" alt="Sean in 2012, before" width="480" height="640" loading="lazy"><img src="img/2012-after.jpg" alt="Sean in Marine Corps camouflage, after" width="480" height="640" loading="lazy"></span></span></li>
+      <li><b>2013</b><span>Joins the United States Marine Corps. Embassy security guard.</span></li>
+      <li><b>2018</b><span>Starts training to fight.</span></li>
+      <li><b>2019</b><span>Gets pulled onto a David Goggins Instagram Live and tells him he will fight in the UFC.</span></li>
+      <li><b>2021</b><span>Turns pro.</span></li>
+      <li><b>2024</b><span>UFC debut.</span></li>
+    </ol>
+  </div></section>
+
+  <section class="scene" id="s3" data-i="3"><div class="pin">
+    <div>
+      <div class="label"><span>UFC 331 · Crypto.com Arena</span><b>04 / 06</b></div>
+      <div class="clock" id="clock" aria-label="Fight clock">0:00</div>
+      <div class="clock-sub">Round 1 · Keep scrolling</div>
+    </div>
+    <div class="right story fade">
+      <p>September 19, 2026. Two UFC losses behind him. Across the cage, Gable Steveson: Olympic gold medalist, undefeated, Jon Jones in his corner.</p>
+      <p><em>Right hand. Left hook.</em> Twelve seconds. The third fastest knockout in UFC heavyweight history.</p>
+    </div>
+  </div></section>
+
+  <section class="scene" id="s4" data-i="4"><div class="pin">
+    <div>
+      <div class="label"><span>After the bell</span><b>05 / 06</b></div>
+      <h2><span class="line"><span>Forehead</span></span><span class="line"><span>to the</span></span><span class="line"><span>ground</span></span></h2>
+    </div>
+    <div class="right story fade">
+      <p>He went down in <span class="term">sujūd</span>, the prostration of prayer. He recited <span class="term">Al-Fatiha</span>, the opening chapter of the Quran.</p>
+      <p>Then he put on the <span class="term">keffiyeh</span>, the patterned scarf of Palestine. The pattern you see is its weave.</p>
+    </div>
+  </div></section>
+
+  <section class="scene mother" id="mother" data-i="4" data-hold="1" aria-label="Hadith on the mother">
+    <div class="m-pin">
+      <p class="m-line m-q" data-at=".08">A man came to the Prophet <span class="saw">ﷺ</span> and asked, "Who is most deserving of my good company?"</p>
+      <p class="m-line m-a" data-at=".22">Your mother. <span class="m-ar" lang="ar">أُمُّكَ</span></p>
+      <p class="m-line m-ask" data-at=".30">Then who?</p>
+      <p class="m-line m-a" data-at=".38">Your mother. <span class="m-ar" lang="ar">أُمُّكَ</span></p>
+      <p class="m-line m-ask" data-at=".46">Then who?</p>
+      <p class="m-line m-a" data-at=".54">Your mother. <span class="m-ar" lang="ar">أُمُّكَ</span></p>
+      <p class="m-line m-ask" data-at=".62">Then who?</p>
+      <p class="m-line m-f" data-at=".70">Then your father.</p>
+      <p class="m-line m-src" data-at=".78">Narrated by Abu Hurayrah · Sahih al-Bukhari 5971 · Sahih Muslim 2548</p>
+    </div>
+  </section>
+
+  <section class="scene" id="s5" data-i="5"><div class="pin in">
+    <div>
+      <div class="label"><span>The unit</span><b>06 / 06</b></div>
+      <h2><span class="line"><span>Enlist</span></span></h2>
+      <p class="lead">Get your tag. Get the text on fight night, at walkout, and from Sean when it's over. Every enlistment lights a city on the map.</p>
+      <p class="unit-count" id="unit-count" hidden></p>
+      <form class="enlist" id="enlist" novalidate>
+        <div class="row">
+          <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" maxlength="22" required></div>
+          <div class="field"><label for="f-city">City</label><input id="f-city" name="city" autocomplete="address-level2" maxlength="40" list="city-list" required><datalist id="city-list"></datalist></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email"></div>
+        </div>
+        <label class="check" for="f-sms"><input type="checkbox" id="f-sms" name="sms"><span>Text me on fight night: countdown, walkout, and Sean after the fight. Message and data rates may apply. Reply STOP to quit.</span></label>
+        <div class="cta" style="margin-top:6px"><button class="btn" type="submit" id="f-go">Stamp my tag</button></div>
+        <div class="ok" id="ok" role="status"></div>
+        <p class="note">Add an email, a phone, or both. Your name and city go on your tag and your city lights up on the map. Your contact info stays private to Sean.</p>
+      </form>
+    </div>
+    <div class="tagwrap">
+      <div class="tag" id="tag">
+        <div class="t">Sharaf unit</div>
+        <div class="t" id="t-name">Your name</div>
+        <div class="t" id="t-city">Your city</div>
+        <div class="t n" id="t-num">No. ??????</div>
+        <div class="t s">The Smoke · 5–2</div>
+        <div class="ar" lang="ar">شرف</div>
+      </div>
+      <div class="tagcap" id="tagcap">Your tag · screenshot it, post it</div>
+    </div>
+  </div></section>
+</main>
+
+<section class="lockin-band" id="lockin" aria-labelledby="lockin-h">
+  <div class="lockin-inner">
+    <div>
+      <div class="label"><span>The app</span><span>Free for the unit</span></div>
+      <h2 id="lockin-h">The<br>Lock In</h2>
+      <p class="lead">Sean's program, one session a day, on your phone. Hands on Monday, iron on Tuesday, roadwork on Wednesday, all the way to camp on Saturday. Lock in, do the work, see who else showed up. Your tag number comes with you.</p>
+      <div class="cta"><a class="btn" href="lockin/">Open The Lock In</a></div>
+    </div>
+    <ul class="week" aria-label="The weekly grid">
+      <li><b>Mon</b><span>Hands</span><i>Striking</i></li>
+      <li><b>Tue</b><span>Iron</span><i>Strength</i></li>
+      <li><b>Wed</b><span>Roadwork</span><i>Conditioning</i></li>
+      <li><b>Thu</b><span>Grapple</span><i>Wrestling and clinch</i></li>
+      <li><b>Fri</b><span>Power</span><i>Explosive</i></li>
+      <li><b>Sat</b><span>Camp</span><i>The long session</i></li>
+      <li><b>Sun</b><span>Recover</span><i>Mobility and reflection</i></li>
+    </ul>
+  </div>
+</section>
+
+<section class="corner" id="corner" aria-labelledby="corner-h">
+  <div class="corner-head">
+    <div>
+      <div class="label"><span>The corner</span><span>Before every fight</span></div>
+      <h2 id="corner-h">Leave a du'a</h2>
+      <p class="lead">A <span class="term">du'a</span> is a personal prayer, a supplication to Allah in your own words. Leave one for Sean before he walks out, or leave a word of support in any language. He reads them in camp.</p>
+    </div>
+    <form class="dua-form" id="dua-form" novalidate>
+      <div class="row">
+        <div class="field"><label for="d-name">Name</label><input id="d-name" maxlength="40" autocomplete="given-name" required></div>
+        <div class="field"><label for="d-city">City</label><input id="d-city" maxlength="60" list="city-list"></div>
+      </div>
+      <div class="field"><label for="d-msg">Your du'a or message</label><textarea id="d-msg" maxlength="280" rows="4" required></textarea></div>
+      <div class="cta"><button class="btn" type="submit" id="d-go">Send to the corner</button><span class="note" id="d-left">280 left</span></div>
+      <div class="ok" id="d-ok" role="status"></div>
+    </form>
+  </div>
+  <div class="wall" id="wall" aria-live="polite"><p class="note wall-empty">The wall fills as messages are approved. Be the first.</p></div>
+</section>
+
+<footer>
+  <a class="mark" href="#s0"><span>Sean Sharaf</span><span class="ar" lang="ar">شرف</span></a>
+  <div class="cta" style="margin:0"><a class="btn ghost small" href="https://www.instagram.com/sharafmma/" target="_blank" rel="noopener">Instagram @sharafmma</a><a class="btn ghost small" href="https://www.youtube.com/@sharafmma" target="_blank" rel="noopener">YouTube @sharafmma</a><a class="btn ghost small" href="https://kick.com/sharafmma" target="_blank" rel="noopener">Kick @sharafmma</a></div>
+  <p class="fine">Independent site for Sean Sharaf. Not affiliated with, endorsed by, or sponsored by the UFC or Zuffa LLC.</p>
+</footer>
+
+<script src="cities.js"></script>
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js";
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches, mobile=innerWidth<860;
+const N=mobile?9000:18000, R=Math.random, TAU=Math.PI*2, rr=(a,b)=>a+(b-a)*R();
+const SMOKE=[.80,.84,.66], EMBER=[1,.36,.14], STEEL=[.74,.72,.56], DIM=[.19,.23,.13];
+const mixc=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];
+const vary=(c,k=.12)=>{const v=1-k+R()*k*2;return[c[0]*v,c[1]*v,c[2]*v];};
+function build(fn){const p=new Float32Array(N*3),c=new Float32Array(N*3);for(let i=0;i<N;i++){const o=fn(i/N);p.set(o[0],i*3);c.set(o[1],i*3);}return{p,c};}
+function ll(lat,lon,r){const a=lat*Math.PI/180,b=lon*Math.PI/180;return[r*Math.cos(a)*Math.sin(b),r*Math.sin(a),r*Math.cos(a)*Math.cos(b)];}
+function sphere(r){const th=R()*TAU,ph=Math.acos(2*R()-1);return[r*Math.sin(ph)*Math.cos(th),r*Math.cos(ph),r*Math.sin(ph)*Math.sin(th)];}
+
+// text sampled from a canvas
+function textPoints(str,font,W){const cw=1400,ch=520,cv=document.createElement("canvas");cv.width=cw;cv.height=ch;const x=cv.getContext("2d");
+  x.fillStyle="#fff";x.textAlign="center";x.textBaseline="middle";x.font=font;x.fillText(str,cw/2,ch/2);
+  const d=x.getImageData(0,0,cw,ch).data,pts=[];for(let y=0;y<ch;y+=2)for(let X=0;X<cw;X+=2){if(d[(y*cw+X)*4+3]>128)pts.push([(X/cw-.5)*W,-(y/ch-.5)*W*ch/cw]);}
+  return pts;}
+function textShape(pts){if(pts.length<200)return build(()=>[sphere(1.6),vary(SMOKE)]);
+  return build(u=>{const q=pts[(R()*pts.length)|0];if(u<.88){const y=q[1];return[[q[0]+rr(-.02,.02),y+rr(-.02,.02),rr(-.12,.12)],mixc(SMOKE,EMBER,Math.max(0,Math.min(1,.5-y*.35))*.55)];}
+    return[[q[0]+rr(-.5,.5),q[1]+rr(-.2,.9),rr(-.6,.6)],vary(DIM,.3)];});}
+
+// 0 honor in Arabic (placeholder until the font loads)
+const shape0=build(()=>[sphere(1.7),vary(SMOKE)]);
+// 1 Jerusalem to Santa Ana arc over a sparse world
+const JER=ll(31.8,35.2,1),SAN=ll(33.7,-117.9,1);
+function slerp(a,b,t){const d=Math.acos(Math.max(-1,Math.min(1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2]))),s=Math.sin(d);const ka=Math.sin((1-t)*d)/s,kb=Math.sin(t*d)/s;return[a[0]*ka+b[0]*kb,a[1]*ka+b[1]*kb,a[2]*ka+b[2]*kb];}
+const shape1=build(u=>{const r=1.75;
+  if(u<.42){return[sphere(r),vary(DIM,.4)];}
+  if(u<.82){const t=R(),v=slerp(JER,SAN,t),h=r*(1+.42*Math.sin(Math.PI*t));return[[v[0]*h+rr(-.025,.025),v[1]*h+rr(-.025,.025),v[2]*h+rr(-.025,.025)],mixc(EMBER,SMOKE,t)];}
+  const e=u<.91?JER:SAN,c=u<.91?EMBER:SMOKE;const s=sphere(.12*Math.cbrt(R()));return[[e[0]*r+s[0],e[1]*r+s[1],e[2]*r+s[2]],vary(c,.1)];});
+// 2 dog tag with ball chain
+function rrEdge(hw,hh,r){const sx=hw-r,sy=hh-r,k=(R()*8)|0;
+  if(k===0)return[rr(-sx,sx),hh];if(k===1)return[rr(-sx,sx),-hh];if(k===2)return[-hw,rr(-sy,sy)];if(k===3)return[hw,rr(-sy,sy)];
+  const cx=k&1?sx:-sx,cy=k&2?sy:-sy,a0=Math.atan2(cy,cx),a=a0+rr(-Math.PI/4,Math.PI/4);return[cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+function inRR(x,y,hw,hh,r){const dx=Math.max(Math.abs(x)-(hw-r),0),dy=Math.max(Math.abs(y)-(hh-r),0);return dx*dx+dy*dy<=r*r;}
+const shape2=build(u=>{const hw=1.0,hh=1.5,r=.38;
+  if(u<.32){const e=rrEdge(hw,hh,r);return[[e[0],e[1]-.2,rr(-.05,.05)],vary(STEEL,.08)];}
+  if(u<.58){let x,y;do{x=rr(-hw,hw);y=rr(-hh,hh);}while(!inRR(x,y,hw,hh,r)||Math.hypot(x,y-1.18)<.17);return[[x,y-.2,rr(-.03,.03)],vary(DIM,.4)];}
+  if(u<.8){const row=(R()*4)|0,y=.35-row*.38,len=[1.2,1.0,1.3,.7][row],x=rr(-.65,-.65+len);return[[x,y-.2+rr(-.03,.03),.04],row===3?EMBER:SMOKE];}
+  const t=R(),bead=Math.round(t*16)/16,cx=Math.sin(bead*Math.PI)*-.6-bead*.5,cy=.98+bead*1.25,s=sphere(.045);return[[cx+s[0],cy+s[1],s[2]],vary(STEEL,.15)];});
+// 3 fight clock dial, hand on twelve
+const shape3=build(u=>{
+  if(u<.38){const a=R()*TAU,rad=rr(1.95,2.12);return[[rad*Math.cos(a),rad*Math.sin(a),rr(-.05,.05)],vary(SMOKE,.08)];}
+  if(u<.62){const k=(R()*12)|0,a=Math.PI/2-k*TAU/12,rad=rr(1.55,1.85),w=rr(-.04,.04);const big=k===0;
+    return[[rad*Math.cos(a)+w*Math.sin(a)*(big?2:1),rad*Math.sin(a)-w*Math.cos(a)*(big?2:1),rr(-.03,.03)],big?EMBER:STEEL];}
+  if(u<.78){const t=R()*1.5;return[[rr(-.035,.035),t,rr(-.03,.03)],EMBER];}
+  if(u<.83){const s=sphere(.12*Math.cbrt(R()));return[s,EMBER];}
+  const a=R()*TAU,rad=1.9*Math.sqrt(R());return[[rad*Math.cos(a),rad*Math.sin(a),rr(-.1,.1)],vary(DIM,.4)];});
+// 4 keffiyeh weave: fishnet, bands, olive leaf zigzag, fringe
+const shape4=build(u=>{const S=.4;
+  if(u<.46){let x,y;do{const fam=R()<.5,k=Math.round(rr(-10,10));x=rr(-2.05,2.05);y=fam?x-k*S:k*S-x;}while(y<-.9||y>1.55);
+    return[[x,y,rr(-.03,.03)],vary(SMOKE,.1)];}
+  if(u<.62){const ys=[-1.1,-1.22,1.68];const y=ys[(R()*3)|0];return[[rr(-2.05,2.05),y+rr(-.02,.02),rr(-.03,.03)],vary(STEEL,.08)];}
+  if(u<.8){const x=rr(-2.05,2.05),p=((x*2.6)%1+1)%1,tri=Math.abs(p*2-1);return[[x,-1.55+.16*tri+rr(-.02,.02),rr(-.03,.03)],vary(EMBER,.12)];}
+  if(u<.9){const k=Math.round(rr(-20,20)),x=k*.1;return[[x+rr(-.01,.01),rr(-2.15,-1.85),rr(-.03,.03)],vary(STEEL,.2)];}
+  return[[rr(-2.05,2.05),rr(-.9,1.55),rr(-.15,.15)],vary(DIM,.4)];});
+// 5 the unit: world with lit cities (real enlistments)
+const land=(p)=>Math.sin(1.7*p[0]+.3)*Math.cos(1.3*p[1])+Math.sin(2.1*p[2]+1.1)*.8+Math.cos(1.1*p[0]+2*p[1])*.5;
+function buildUnit(lights){const r=1.95;const L=lights.length?lights:[[31.78,35.22,1],[33.75,-117.87,1]];
+  const W=L.map(l=>Math.sqrt(l[2])),TW=W.reduce((a,b)=>a+b,0);const cum=[];let acc=0;W.forEach(w=>{acc+=w/TW;cum.push(acc);});
+  return build(u=>{
+  if(u<.68){let p;do{p=sphere(r);}while(land(p)<.25&&R()<.82);return[p,land(p)>.25?vary(SMOKE,.15):vary(DIM,.3)];}
+  if(u<.9){const x=R();let k=0;while(k<cum.length-1&&cum[k]<x)k++;const c=L[k],e=ll(c[0],c[1],r),sz=.05+.05*Math.min(1,W[k]/3),s=sphere(sz*Math.cbrt(R()));return[[e[0]+s[0],e[1]+s[1],e[2]+s[2]],vary(EMBER,.1)];}
+  const t=R(),v=slerp(JER,SAN,t),h=r*(1+.3*Math.sin(Math.PI*t));return[[v[0]*h,v[1]*h,v[2]*h],mixc(EMBER,SMOKE,t)];});}
+const shape5=buildUnit([]);
+
+const canvas=document.getElementById("gl");
+const renderer=new THREE.WebGLRenderer({canvas,antialias:false,alpha:true,powerPreference:"high-performance"});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(42,1,.1,100);camera.position.set(0,0,9);
+const geo=new THREE.BufferGeometry();
+function setShape(k,s){geo.setAttribute(k===0?"position":"p"+k,new THREE.BufferAttribute(s.p,3));geo.setAttribute("c"+k,new THREE.BufferAttribute(s.c,3));}
+[shape0,shape1,shape2,shape3,shape4,shape5].forEach((s,k)=>setShape(k,s));
+const rnd=new Float32Array(N);for(let i=0;i<N;i++)rnd[i]=R();geo.setAttribute("aRnd",new THREE.BufferAttribute(rnd,1));
+const uni={uStage:{value:0},uTime:{value:0},uPx:{value:(mobile?3.4:3.2)*renderer.getPixelRatio()},uIntro:{value:0},uMotion:{value:reduce?0:1},uShock:{value:0},uDim:{value:1}};
+const mat=new THREE.ShaderMaterial({uniforms:uni,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+vertexShader:`attribute vec3 p1,p2,p3,p4,p5,c0,c1,c2,c3,c4,c5;attribute float aRnd;uniform float uStage,uTime,uPx,uIntro,uMotion,uShock,uDim;varying vec3 vC;varying float vA;
+void main(){float s=clamp(uStage,0.,5.);float i=floor(s);float f=s-i;float d=aRnd*.35;float t=smoothstep(d,d+.65,f);
+vec3 a=position,b=p1,ca=c0,cb=c1;
+if(i>.5&&i<1.5){a=p1;b=p2;ca=c1;cb=c2;}else if(i>1.5&&i<2.5){a=p2;b=p3;ca=c2;cb=c3;}else if(i>2.5&&i<3.5){a=p3;b=p4;ca=c3;cb=c4;}else if(i>3.5&&i<4.5){a=p4;b=p5;ca=c4;cb=c5;}else if(i>4.5){a=p5;b=p5;ca=c5;cb=c5;}
+vec3 pos=mix(a,b,t);float burst=sin(t*3.14159)*uMotion;
+vec3 swirl=vec3(sin(aRnd*91.+uTime*.7),cos(aRnd*57.+uTime*.6),sin(aRnd*33.+uTime*.5));
+pos+=burst*(swirl*1.3+normalize(pos+vec3(.001))*1.1);
+pos+=.035*uMotion*vec3(sin(uTime*1.3+aRnd*50.),cos(uTime*1.1+aRnd*70.),sin(uTime*.9+aRnd*20.));
+pos+=normalize(pos+vec3(.001))*uShock*(1.5+aRnd*3.)+swirl*uShock*.8;
+float e=1.-uIntro;pos=mix(pos,swirl*7.,e*e);vC=mix(ca,cb,t)+vec3(uShock*.6);
+vec4 mv=modelViewMatrix*vec4(pos,1.);gl_PointSize=uPx*(.55+aRnd*1.1)*(9./-mv.z);
+vA=(.6+.4*sin(uTime*2.+aRnd*40.))*(.35+.65*uIntro)*uDim;gl_Position=projectionMatrix*mv;}`,
+fragmentShader:`varying vec3 vC;varying float vA;void main(){float d=length(gl_PointCoord-.5);float a=smoothstep(.5,0.,d);a*=a;gl_FragColor=vec4(vC*1.2,min(1.,a*vA*1.1));}`});
+const pts=new THREE.Points(geo,mat);scene.add(pts);
+// drifting embers in the back
+const sg=new THREE.BufferGeometry(),SN=mobile?500:1200,sp=new Float32Array(SN*3);
+for(let i=0;i<SN;i++){sp[i*3]=rr(-22,22);sp[i*3+1]=rr(-14,14);sp[i*3+2]=rr(-18,-4);}
+sg.setAttribute("position",new THREE.BufferAttribute(sp,3));
+const stars=new THREE.Points(sg,new THREE.PointsMaterial({size:.045,color:0xa9b37e,transparent:true,opacity:.35,depthWrite:false}));scene.add(stars);
+
+function setUnit(lights){const s=buildUnit(lights);geo.attributes.p5.array.set(s.p);geo.attributes.p5.needsUpdate=true;geo.attributes.c5.array.set(s.c);geo.attributes.c5.needsUpdate=true;}
+window.__setUnit=setUnit;
+document.fonts.load('700 300px "Reem Kufi"').then(()=>{const s=textShape(textPoints("شرف",'700 300px "Reem Kufi"',5.2));
+  geo.attributes.position.array.set(s.p);geo.attributes.position.needsUpdate=true;geo.attributes.c0.array.set(s.c);geo.attributes.c0.needsUpdate=true;}).catch(()=>{});
+
+function size(){renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();}
+addEventListener("resize",size);size();
+const LAST=5,secs=[...document.querySelectorAll(".scene")],mother=document.getElementById("mother"),mLines=[...mother.querySelectorAll(".m-line")];let dimT=1,dim=1;let target=0,stage=0,mx=0,my=0,cmx=0,cmy=0,active=-1;
+const clockEl=document.getElementById("clock"),flash=document.getElementById("flash"),s3=document.getElementById("s3");let lastSec=0,shock=0;
+function readScroll(){const mid=scrollY+innerHeight*.5;let raw=0;
+  let hold=false;
+  for(let k=0;k<secs.length;k++){const s=secs[k],top=s.offsetTop,h=s.offsetHeight,base=+s.dataset.i;
+    if(mid>=top&&mid<top+h){if(s.dataset.hold){hold=true;raw=base;}else raw=base+(mid-top)/h-.5;break;}
+    if(k===secs.length-1&&mid>=top+h)raw=LAST;}
+  raw=Math.max(0,Math.min(LAST,raw));const i=Math.floor(raw),f=raw-i;target=hold?raw:Math.min(LAST,i+Math.max(0,Math.min(1,(f-.2)/.6)));
+  if(!hold&&raw>4&&raw<4.5&&mid<mother.offsetTop)target=4;
+  const mp=(mid-mother.offsetTop)/mother.offsetHeight;dimT=(mp>-.05&&mp<1.02)?.06:1;document.body.classList.toggle("in-mother",mp>-.05&&mp<1.02);
+  mLines.forEach(l=>l.classList.toggle("on",reduce||mp>=+l.dataset.at));
+  // fight clock scrubs with scroll through chapter 4
+  const p=(mid-s3.offsetTop)/s3.offsetHeight;const sec=Math.max(0,Math.min(12,Math.floor((p-.12)/.5*12)));
+  if(sec!==lastSec){clockEl.textContent="0:"+String(sec).padStart(2,"0");clockEl.classList.toggle("hit",sec===12);
+    if(sec===12&&lastSec<12&&!reduce){shock=1;flash.classList.remove("go");void flash.offsetWidth;flash.classList.add("go");document.body.classList.remove("shake");void document.body.offsetWidth;document.body.classList.add("shake");}
+    lastSec=sec;}}
+addEventListener("scroll",readScroll,{passive:true});readScroll();
+addEventListener("pointermove",e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;});
+const HALOS=["rgba(111,125,60,.16)","rgba(111,125,60,.14)","rgba(143,158,82,.13)","rgba(255,90,36,.10)","rgba(111,125,60,.12)","rgba(111,125,60,.16)"];
+const FLAT=[1,0,0,1,1,0],RAILHIDE=[2,5];
+const halo=document.getElementById("halo"),progI=[...document.querySelectorAll(".prog i")],rail=[...document.querySelectorAll(".rail span")];
+function setActive(k){if(k===active)return;active=k;
+  halo.style.background=`radial-gradient(55vmax 55vmax at 62% 45%, ${HALOS[k]}, transparent 60%)`;
+  progI.forEach((e,j)=>e.classList.toggle("on",j===k));rail.forEach(e=>e.classList.toggle("hot",e.dataset.k===String(k)));
+  document.body.classList.toggle("no-rail",RAILHIDE.includes(k));}
+// placement per chapter: x, y, scale (desktop) and y, scale (phone)
+const XS=[2.6,2.1,.9,2.4,2.5,2.6],YS=[.6,-.05,1.35,.35,.35,.1],SC=[1.05,.85,.68,.95,.85,.95],YM=[1.9,1.75,2.6,1.85,1.9,2.2],SCM=[.6,.6,.36,.55,.5,.55];
+const lerpA=(A,si,sf)=>A[si]+(A[si+1]-A[si])*sf;
+const clock=new THREE.Clock();let intro=reduce?1:0;
+function frame(){const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;
+  stage+=(target-stage)*(reduce?1:Math.min(1,dt*4));intro=Math.min(1,intro+dt*.45);
+  shock=Math.max(0,shock-dt*1.3);uni.uShock.value=shock*shock;
+  dim+=(dimT-dim)*Math.min(1,dt*2.5);uni.uDim.value=dim;uni.uStage.value=stage;uni.uTime.value=t;uni.uIntro.value=1-Math.pow(1-intro,3);
+  cmx+=(mx-cmx)*.05;cmy+=(my-cmy)*.05;
+  const si=Math.min(LAST-1,Math.floor(stage)),sf=stage-si,flat=Math.min(1,lerpA(FLAT,si,sf));
+  pts.rotation.y=(reduce?0:(t*.18)%TAU)*(1-flat)+cmx*.5;pts.rotation.x=cmy*.25+.08*(1-flat);
+  pts.scale.setScalar(lerpA(mobile?SCM:SC,si,sf));
+  pts.position.x=mobile?0:lerpA(XS,si,sf);pts.position.y=mobile?lerpA(YM,si,sf):lerpA(YS,si,sf);
+  stars.rotation.y=cmx*.08;stars.position.y=-scrollY*.0015;
+  setActive(Math.round(stage));renderer.render(scene,camera);requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("in");}),{threshold:.25});
+document.querySelectorAll(".pin").forEach(p=>io.observe(p));
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{const el=document.querySelector(a.getAttribute("href"));if(!el)return;e.preventDefault();
+  const k=+el.dataset.i;window.scrollTo({top:el.offsetTop+(k===0||k===LAST?0:el.offsetHeight*.35),behavior:reduce?"auto":"smooth"});}));
+
+// ===== live wiring =====
+const SB="https://dajllojejbxapqlxurdb.supabase.co",KEY="sb_publishable_ev9knQozkf3dwwtR56QE_A_g5APlZnn";
+async function rpc(fn,body){const r=await fetch(`${SB}/rest/v1/rpc/${fn}`,{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json"},body:JSON.stringify(body||{})});
+  const t=await r.text();let j=null;try{j=t?JSON.parse(t):null;}catch(e){}
+  if(!r.ok)throw new Error((j&&j.message)||"Something went wrong. Try again.");return j;}
+const $=id=>document.getElementById(id),tag=$("tag"),pad=n=>String(n).padStart(6,"0"),up=v=>v.trim().toUpperCase();
+const norm=v=>v.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").split(",")[0].replace(/\./g,"").trim();
+const CITY=new Map();(window.CITIES||[]).forEach(c=>{const k=norm(c[0]);if(!CITY.has(k))CITY.set(k,c);});
+$("city-list").innerHTML=(window.CITIES||[]).map(c=>`<option value="${c[0]}, ${c[1]}"></option>`).join("");
+let store={};try{store=JSON.parse(localStorage.getItem("sharaf-tag")||"{}")||{};}catch(e){}
+function showTag(t){$("t-name").textContent=up(t.name||"")||"Your name";$("t-city").textContent=up((t.city||"").split(",")[0])||"Your city";$("t-num").textContent=t.num?"No. "+pad(t.num):"No. ??????";}
+if(store.num){showTag(store);$("tagcap").textContent="Your tag · No. "+pad(store.num)+" · screenshot it, post it";}
+
+async function loadUnit(){try{const rows=await rpc("unit_map");if(!rows||!rows.length)return;
+  const total=rows[0].total;const lights=[];rows.forEach(r=>{const c=CITY.get(norm(r.city||""));if(c)lights.push([c[2],c[3],Number(r.members)]);});
+  if(lights.length)setUnit(lights);
+  const cities=rows.length;$("unit-count").textContent=`${Number(total).toLocaleString()} enlisted · ${cities} ${cities===1?"city":"cities"}`;$("unit-count").hidden=false;
+  $("hero-count").textContent=`${Number(total).toLocaleString()} in the unit`;$("hero-count").hidden=false;}catch(e){}}
+loadUnit();setInterval(loadUnit,60000);
+
+$("f-name").addEventListener("input",e=>{if(!store.num)$("t-name").textContent=up(e.target.value)||"Your name";});
+$("f-city").addEventListener("input",e=>{if(!store.num)$("t-city").textContent=up(e.target.value.split(",")[0])||"Your city";});
+$("enlist").addEventListener("submit",async e=>{e.preventDefault();const ok=$("ok");ok.classList.remove("err");
+  const name=$("f-name").value.trim(),city=$("f-city").value.trim(),email=$("f-email").value.trim(),phone=$("f-phone").value.trim(),sms=$("f-sms").checked;
+  if(!name||!city){ok.classList.add("err");ok.textContent="Add your name and city to stamp the tag.";return;}
+  if(!email&&!phone){ok.classList.add("err");ok.textContent="Add an email or a phone number so Sean can reach you.";return;}
+  if(email&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ok.classList.add("err");ok.textContent="That email doesn't look right. Check it and try again.";return;}
+  if(sms&&!phone){ok.classList.add("err");ok.textContent="Add your phone number to get fight night texts.";return;}
+  const btn=$("f-go");btn.disabled=true;btn.textContent="Stamping";
+  try{const num=await rpc("enlist2",{p_name:name,p_city:city.split(",")[0].trim(),p_email:email||null,p_phone:phone||null,p_sms:sms});
+    store={num,name,city:city.split(",")[0].trim()};try{localStorage.setItem("sharaf-tag",JSON.stringify(store));}catch(err){}
+    showTag(store);tag.classList.remove("stamp");void tag.offsetWidth;tag.classList.add("stamp");shock=.6;
+    $("tagcap").textContent="Your tag · No. "+pad(num)+" · screenshot it, post it";
+    ok.textContent=`You're in. Number ${pad(num)}. Screenshot your tag and post it. Your city is on the map.`;
+    $("enlist").reset();loadUnit();}
+  catch(err){ok.classList.add("err");ok.textContent=err.message;}
+  finally{btn.disabled=false;btn.textContent="Stamp my tag";}});
+
+// the corner: du'a wall
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function loadWall(){try{const rows=await rpc("dua_wall");if(!rows||!rows.length)return;
+  $("wall").innerHTML=rows.map(r=>`<article class="dua"><p>${esc(r.message)}</p><span class="who">${esc(r.name)}${r.city?" · "+esc(r.city):""}</span></article>`).join("");}catch(e){}}
+loadWall();
+$("d-msg").addEventListener("input",e=>{$("d-left").textContent=(280-e.target.value.length)+" left";});
+$("dua-form").addEventListener("submit",async e=>{e.preventDefault();const ok=$("d-ok");ok.classList.remove("err");
+  const name=$("d-name").value.trim(),city=$("d-city").value.trim().split(",")[0],msg=$("d-msg").value.trim();
+  if(!name||msg.length<2){ok.classList.add("err");ok.textContent="Add your name and a message.";return;}
+  const btn=$("d-go");btn.disabled=true;
+  try{await rpc("submit_dua",{p_name:name,p_city:city||null,p_message:msg});ok.textContent="Received. Sean's team reviews every message before it goes on the wall.";$("dua-form").reset();$("d-left").textContent="280 left";}
+  catch(err){ok.classList.add("err");ok.textContent=err.message;}finally{btn.disabled=false;}});
+</script>
+</body>
+</html>
