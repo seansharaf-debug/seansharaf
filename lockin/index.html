@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Lock In · Sean Sharaf</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="The Lock In. Sean Sharaf's daily program for the unit. One session a day, locked in together.">
+<meta name="theme-color" content="#0b0e07">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="The Lock In">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@300;400;600;700&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a phone app. One screen at a time, tab bar pinned to the bottom, huge focus type up top, the work in the middle. Dark olive world, same as the site. */
+:root{color-scheme:dark;
+  --bg:#0b0e07;--panel:#11150b;--panel2:#171c10;--ink:#ebe7d6;--dim:rgba(235,231,214,.62);--faint:rgba(167,180,120,.2);
+  --od:#6f7d3c;--od-hi:#8f9e52;--ember:#ff5a24;--ok:#a9c25c;
+  --display:"Big Shoulders Display","Impact","Arial Narrow",sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;--body:"Manrope",system-ui,sans-serif;--arabic:"Reem Kufi","Noto Kufi Arabic",serif;
+  --tabh:64px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body);-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+[hidden]{display:none!important}
+a{color:inherit}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--od-hi);outline-offset:2px}
+.app{min-height:100%;display:flex;flex-direction:column;max-width:560px;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) 20px 10px}
+.mark{display:flex;align-items:center;gap:10px;font:900 20px/1 var(--display);letter-spacing:.08em;text-transform:uppercase}
+.mark .lock{width:16px;height:20px;position:relative;display:inline-block}
+.mark .lock::before{content:"";position:absolute;left:3px;top:0;width:10px;height:10px;border:2px solid var(--od-hi);border-bottom:0;border-radius:6px 6px 0 0}
+.mark .lock::after{content:"";position:absolute;left:0;top:8px;width:16px;height:12px;background:var(--od-hi);border-radius:2px}
+.mark small{font:500 10px/1 var(--mono);letter-spacing:.2em;color:var(--dim)}
+.chip{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:9px 11px;border:1px solid var(--faint);color:var(--dim);white-space:nowrap}
+.chip b{color:var(--ink);font-weight:500}
+main{flex:1;padding:6px 20px calc(var(--tabh) + 28px + env(safe-area-inset-bottom,0px))}
+.screen{display:grid;gap:18px}
+.label{font:500 10px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim);display:flex;gap:12px;flex-wrap:wrap}
+.label b{color:var(--od-hi);font-weight:500}
+h1{font:900 clamp(64px,22vw,112px)/.84 var(--display);text-transform:uppercase;letter-spacing:.005em;text-wrap:balance}
+h2{font:900 34px/.95 var(--display);text-transform:uppercase}
+h3{font:700 12px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.sub{font:300 17px/1.5 var(--body);color:var(--dim)}
+.brief{border-left:2px solid var(--od);padding:4px 0 4px 14px;font:300 16px/1.6 var(--body);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:500 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;padding:16px 18px;background:var(--ink);color:var(--bg);border:0;cursor:pointer;width:100%;transition:background .2s,transform .2s}
+.btn:active{transform:scale(.985)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--faint)}
+.btn.od{background:var(--od-hi);color:#0b0e07}
+.btn.on{background:var(--od-hi);color:#0b0e07}
+.btn.small{padding:11px 13px;width:auto}
+.btn[disabled]{opacity:.5;cursor:wait}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:grid;gap:6px;min-width:0}
+.field label{font:500 10px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.field input,.field textarea,.field select{width:100%;background:var(--panel);border:1px solid var(--faint);padding:14px;border-radius:0;font-size:16px}
+.field textarea{resize:vertical;min-height:72px}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--od-hi)}
+.msg{font:500 12px/1.5 var(--mono);color:var(--od-hi);min-height:1.5em}
+.msg.err{color:#ff8a6b}
+.note{font:400 12px/1.6 var(--mono);color:var(--dim)}
+/* work list */
+.work{display:grid;gap:8px}
+.block{font:500 10px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--od-hi);padding:14px 0 4px}
+.ex{display:grid;grid-template-columns:28px 1fr;gap:14px;align-items:start;padding:14px 14px;background:var(--panel);border:1px solid var(--faint);cursor:pointer;transition:background .2s,border-color .2s}
+.ex .box{width:24px;height:24px;border:2px solid var(--faint);margin-top:2px;position:relative}
+.ex.done{background:var(--panel2);border-color:rgba(143,158,82,.45)}
+.ex.done .box{background:var(--od-hi);border-color:var(--od-hi)}
+.ex.done .box::after{content:"";position:absolute;left:7px;top:2px;width:6px;height:12px;border:solid #0b0e07;border-width:0 3px 3px 0;transform:rotate(45deg)}
+.ex .name{font:700 17px/1.25 var(--body)}
+.ex.done .name{color:var(--dim);text-decoration:line-through}
+.ex .meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;font:500 12px/1.4 var(--mono);color:var(--dim);letter-spacing:.04em}
+.ex .meta b{color:var(--ink);font-weight:500}
+.ex .notes{font:300 14px/1.5 var(--body);color:var(--dim);margin-top:6px}
+.ex .vid{display:inline-block;margin-top:8px;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--od-hi);text-decoration:none;border-bottom:1px solid var(--faint);padding-bottom:3px}
+.rest{border:1px solid var(--faint);padding:4px 8px;cursor:pointer}
+.rest.run{color:var(--od-hi);border-color:var(--od-hi)}
+.empty{padding:26px 18px;border:1px dashed var(--faint);text-align:center;color:var(--dim);font:300 15px/1.6 var(--body)}
+.progress{height:3px;background:var(--faint);position:relative;overflow:hidden}
+.progress i{position:absolute;inset:0;right:auto;background:var(--od-hi);transition:width .4s}
+/* lock-in panel */
+.panel{background:var(--panel);border:1px solid var(--faint);padding:18px;display:grid;gap:14px}
+.panel.hot{border-color:rgba(143,158,82,.5)}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat div{border:1px solid var(--faint);padding:12px 10px}
+.stat b{display:block;font:900 34px/1 var(--display);font-variant-numeric:tabular-nums}
+.stat span{font:500 9px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+/* month */
+.monthhead{display:flex;justify-content:space-between;align-items:center}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal .dow{font:500 9px/1 var(--mono);letter-spacing:.14em;color:var(--dim);text-align:center;padding-bottom:6px}
+.day{aspect-ratio:1;border:1px solid var(--faint);background:var(--panel);display:flex;flex-direction:column;justify-content:space-between;padding:5px 4px;cursor:pointer;position:relative;min-width:0}
+.day.blank{border:0;background:transparent;cursor:default}
+.day .n{font:500 11px/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--dim)}
+.day .f{font:900 clamp(8px,2.2vw,12px)/1 var(--display);text-transform:uppercase;letter-spacing:0;overflow:hidden;white-space:nowrap}
+.day.today{border-color:var(--od-hi)}
+.day.today .n{color:var(--od-hi)}
+.day.in{background:var(--panel2)}
+.day.in::after{content:"";position:absolute;right:6px;top:6px;width:7px;height:7px;background:var(--od-hi);border-radius:50%}
+.day.done::after{background:var(--ember)}
+.day.locked{opacity:.4;cursor:default}
+.day.locked .f{font-size:11px;letter-spacing:.1em}
+.legend{display:flex;gap:16px;font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:var(--od-hi)}
+.legend i.e{background:var(--ember)}
+/* roll call */
+.roll{display:grid;gap:0;border-top:1px solid var(--faint)}
+.roll li{list-style:none;display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 0;border-bottom:1px solid var(--faint);font-size:15px}
+.roll li span{color:var(--dim);font:500 12px/1.6 var(--mono)}
+.roll li b{font:500 12px/1.6 var(--mono);color:var(--od-hi);font-variant-numeric:tabular-nums}
+.big{font:900 clamp(72px,26vw,140px)/.82 var(--display);font-variant-numeric:tabular-nums}
+/* fight */
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.count div{border:1px solid var(--faint);padding:14px 6px;text-align:center}
+.count b{display:block;font:900 clamp(30px,9vw,46px)/1 var(--display);font-variant-numeric:tabular-nums}
+.count span{font:500 9px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.ko{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:baseline}
+.ko b{font:900 clamp(56px,18vw,88px)/.85 var(--display);color:var(--ember)}
+/* tag */
+.tag{width:min(240px,70vw);aspect-ratio:2/3;margin:0 auto;border-radius:22px;padding:46px 22px 22px;position:relative;color:#1b1d22;
+  background:linear-gradient(135deg,#d9dce1 0%,#8d929b 38%,#c9cdd3 55%,#6e737c 100%);box-shadow:0 26px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.7),inset 0 -2px 6px rgba(0,0,0,.35)}
+.tag::before{content:"";position:absolute;top:14px;left:50%;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--bg);box-shadow:inset 0 2px 3px rgba(0,0,0,.6)}
+.tag .t{font:500 13px/1.7 var(--mono);letter-spacing:.12em;text-transform:uppercase;text-shadow:0 1px 0 rgba(255,255,255,.45);overflow-wrap:anywhere}
+.tag .t.n{font:900 30px/1 var(--display);margin-top:12px;font-variant-numeric:tabular-nums;letter-spacing:.03em}
+.tag .ar{position:absolute;bottom:18px;right:20px;font:700 22px/1 var(--arabic);opacity:.55}
+/* tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(11,14,7,.92);backdrop-filter:blur(14px);border-top:1px solid var(--faint);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs div{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);height:var(--tabh)}
+.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-decoration:none;font:500 9px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.tabs a i{width:18px;height:18px;border:1.5px solid currentColor;border-radius:3px;opacity:.8}
+.tabs a.on{color:var(--ink)}
+.tabs a.on i{background:var(--od-hi);border-color:var(--od-hi)}
+/* gate */
+.gate{min-height:calc(100vh - 120px);display:grid;align-content:center;gap:22px}
+.gate h1{font-size:clamp(68px,24vw,120px)}
+.code{font:500 28px/1 var(--mono);letter-spacing:.42em;text-align:center}
+.arline{font:700 clamp(28px,8vw,40px)/1.2 var(--arabic);color:var(--od-hi)}
+.sr{position:absolute;left:-9999px}
+@media (min-width:561px){main{padding-inline:28px}.top{padding-inline:28px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <a class="mark" href="../" aria-label="Sean Sharaf home"><span class="lock" aria-hidden="true"></span><span>The Lock In</span><small>Sharaf</small></a>
+    <div class="chip" id="streakChip" hidden>Day <b id="streakN">0</b></div>
+  </header>
+  <main id="main"></main>
+</div>
+<nav class="tabs" id="tabs" hidden><div>
+  <a href="#today" data-t="today"><i></i>Today</a>
+  <a href="#month" data-t="month"><i></i>Month</a>
+  <a href="#roll" data-t="roll"><i></i>Roll call</a>
+  <a href="#fight" data-t="fight"><i></i>Fight</a>
+  <a href="#me" data-t="me"><i></i>Me</a>
+</div></nav>
+
+<script>
+const BUILD=1;
+const SB="https://dajllojejbxapqlxurdb.supabase.co",KEY="sb_publishable_ev9knQozkf3dwwtR56QE_A_g5APlZnn";
+const $=s=>document.querySelector(s),main=$("#main");
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(6,"0");
+const ymd=d=>{const z=new Date(d.getTime()-d.getTimezoneOffset()*60000);return z.toISOString().slice(0,10);};
+const today=()=>ymd(new Date());
+const DOW=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const fmt=s=>{const d=new Date(s+"T12:00:00");return `${DOW[d.getDay()]} ${MON[d.getMonth()].slice(0,3)} ${d.getDate()}`;};
+let S={token:null,me:null,view:"today",day:today(),cal:null};
+try{S.token=localStorage.getItem("lockin-token");}catch(e){}
+const store=(k,v)=>{try{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
+const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}};
+
+async function rpc(fn,body){const r=await fetch(`${SB}/rest/v1/rpc/${fn}`,{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json"},body:JSON.stringify(body||{})});
+  const t=await r.text();let j=null;try{j=t?JSON.parse(t):null;}catch(e){}
+  if(!r.ok)throw new Error((j&&j.message)||"No connection. Try again.");
+  if(j&&j.error){if(/Signed out/.test(j.error)){signout(false);}throw new Error(j.error);}return j;}
+const auth=(fn,body)=>rpc(fn,Object.assign({p_token:S.token},body||{}));
+
+function signout(call){if(call&&S.token)rpc("lockin_logout",{p_token:S.token}).catch(()=>{});S.token=null;S.me=null;store("lockin-token",null);try{localStorage.removeItem("lockin-token");}catch(e){}$("#tabs").hidden=true;$("#streakChip").hidden=true;gate();}
+
+/* ===== gate ===== */
+function gate(step,email){
+  step=step||"email";
+  if(step==="email")main.innerHTML=`<section class="gate">
+    <div class="label"><span>Sean Sharaf</span><b>The unit</b></div>
+    <h1>The<br>Lock In</h1>
+    <p class="sub">One session a day. Sean's program, the unit locked in together. Sign in with your email and the code we send you.</p>
+    <form id="f" class="field"><label for="em">Email</label><input id="em" type="email" autocomplete="email" inputmode="email" required placeholder="you@email.com">
+      <button class="btn" type="submit" id="go">Send my code</button><div class="msg" id="m" role="status"></div></form>
+    <p class="note">New here? Signing in enlists you in the unit and gets you a tag number.</p></section>`;
+  else if(step==="code")main.innerHTML=`<section class="gate">
+    <div class="label"><span>Code sent to</span><b>${esc(email)}</b></div>
+    <h2>Enter the code</h2>
+    <p class="sub">Six digits. Check your inbox and your spam folder. It works for ten minutes.</p>
+    <form id="f" class="field"><label for="cd">Code</label><input id="cd" class="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9 ]*" maxlength="7" placeholder="000000" required>
+      <button class="btn" type="submit" id="go">Open</button><div class="msg" id="m" role="status"></div></form>
+    <div class="row2"><button class="btn ghost small" id="resend" type="button">Send again</button><button class="btn ghost small" id="back" type="button">Different email</button></div></section>`;
+  else if(step==="profile")main.innerHTML=`<section class="gate">
+    <div class="label"><span>Last step</span><b>Your tag</b></div>
+    <h2>Who's locking in?</h2>
+    <p class="sub">Your first name and city go on your tag and light your city on the map. Pick gym or home so your sessions fit where you train.</p>
+    <form id="f" class="screen">
+      <div class="row2"><div class="field"><label for="nm">Name</label><input id="nm" autocomplete="given-name" maxlength="40" required value="${esc(S.me?.member?.name||"")}"></div>
+      <div class="field"><label for="ct">City</label><input id="ct" autocomplete="address-level2" maxlength="60" required value="${esc(S.me?.member?.city||"")}"></div></div>
+      <div class="field"><label for="md">Where you train</label><select id="md"><option value="gym">Gym</option><option value="home">Home, no gym</option></select></div>
+      <button class="btn" type="submit" id="go">Stamp my tag</button><div class="msg" id="m" role="status"></div></form></section>`;
+  const f=$("#f"),m=$("#m"),go=$("#go");
+  f.addEventListener("submit",async e=>{e.preventDefault();m.className="msg";m.textContent="";go.disabled=true;
+    try{
+      if(step==="email"){const em=$("#em").value.trim();await rpc("lockin_request_code",{p_email:em});gate("code",em);return;}
+      if(step==="code"){const r=await rpc("lockin_verify",{p_email:email,p_code:$("#cd").value,p_ua:navigator.userAgent.slice(0,120)});
+        S.token=r.token;store("lockin-token",r.token);try{localStorage.setItem("lockin-token",r.token);}catch(e){}
+        await boot();return;}
+      if(step==="profile"){const r=await auth("lockin_profile",{p_name:$("#nm").value,p_city:$("#ct").value,p_mode:$("#md").value});S.me.member=r;route();return;}
+    }catch(err){m.className="msg err";m.textContent=err.message;}finally{go.disabled=false;}});
+  if(step==="code"){$("#resend").onclick=async()=>{try{const r=await rpc("lockin_request_code",{p_email:email});m.className="msg";m.textContent=r.resent?"Sent a fresh code.":"A code just went out. Give it a minute.";}catch(err){m.className="msg err";m.textContent=err.message;}};$("#back").onclick=()=>gate("email");$("#cd").focus();}
+  if(step==="profile")$("#md").value=S.me?.member?.mode||"gym";
+}
+
+/* ===== boot ===== */
+async function boot(){
+  if(!S.token){gate();return;}
+  try{S.me=await auth("lockin_me",{p_today:today()});}catch(e){if(!S.token)return;main.innerHTML=`<section class="gate"><h2>No connection</h2><p class="sub">${esc(e.message)}</p><button class="btn ghost" onclick="boot()">Try again</button></section>`;return;}
+  $("#tabs").hidden=false;$("#streakChip").hidden=false;$("#streakN").textContent=S.me.stats.streak;
+  if(!S.me.member.name||!S.me.member.city){gate("profile");return;}
+  route();
+}
+function route(){const h=(location.hash||"#today").slice(1);S.view=["today","month","roll","fight","me"].includes(h)?h:"today";
+  document.querySelectorAll(".tabs a").forEach(a=>a.classList.toggle("on",a.dataset.t===S.view));
+  if(!S.token||!S.me)return;
+  ({today:viewDay,month:viewMonth,roll:viewRoll,fight:viewFight,me:viewMe})[S.view]();window.scrollTo(0,0);}
+addEventListener("hashchange",()=>{if(S.view!=="today")S.day=today();route();});
+
+/* ===== today / a day ===== */
+let restT=null;
+async function viewDay(){
+  const d=S.day,isToday=d===today();
+  main.innerHTML=`<section class="screen"><div class="label"><span>${isToday?"Today":fmt(d)}</span><b>${isToday?fmt(d):""}</b></div><p class="sub">Loading your orders.</p></section>`;
+  let r;try{r=await auth("lockin_day",{p_day:d,p_today:today()});}catch(e){main.innerHTML=`<section class="screen"><p class="msg err">${esc(e.message)}</p></section>`;return;}
+  const F=S.me.focus||{},fx=F[r.focus]||{label:r.focus||"Rest",sub:""};
+  if(r.locked){main.innerHTML=`<section class="screen">
+    <div class="label"><span>${fmt(d)}</span><b>Locked</b></div><h1>${esc(fx.label)}</h1><p class="sub">${esc(fx.sub)}</p>
+    <div class="empty">Tomorrow's orders drop at midnight. Lock in today first.</div>
+    <button class="btn ghost" onclick="S.day=today();location.hash='#today';route()">Back to today</button></section>`;return;}
+  const t=r.template||{},ex=r.exercises||[],ck=r.checkin||{},doneIds=new Set(load("lockin-done-"+d,[]));
+  const doneN=ex.filter(x=>doneIds.has(x.id)).length;
+  let blocks="",cur=null;
+  ex.forEach(x=>{if(x.block&&x.block!==cur){cur=x.block;blocks+=`<div class="block">${esc(cur)}</div>`;}
+    const secs=parseRest(x.rest);
+    blocks+=`<div class="ex ${doneIds.has(x.id)?"done":""}" data-id="${x.id}" role="checkbox" aria-checked="${doneIds.has(x.id)}" tabindex="0"><div class="box"></div><div>
+      <div class="name">${esc(x.name)}</div>
+      <div class="meta">${x.sets?`<span><b>${esc(x.sets)}</b> sets</span>`:""}${x.reps?`<span><b>${esc(x.reps)}</b></span>`:""}${x.rest?`<span class="rest" data-s="${secs||0}">rest <b>${esc(x.rest)}</b></span>`:""}</div>
+      ${x.notes?`<div class="notes">${esc(x.notes)}</div>`:""}${x.video_url?`<a class="vid" href="${esc(x.video_url)}" target="_blank" rel="noopener">Watch Sean do it</a>`:""}</div></div>`;});
+  main.innerHTML=`<section class="screen">
+    <div class="label"><span>${isToday?"Today":fmt(d)}</span>${isToday?`<b>${fmt(d)}</b>`:`<b>${S.me.member.mode==="home"?"Home":"Gym"}</b>`}${t.minutes?`<span>${t.minutes} min</span>`:""}</div>
+    <h1>${esc(fx.label)}</h1>
+    <p class="sub">${esc(t.subtitle||fx.sub||"")}${t.variant&&t.mode==="gym"&&t.variant!=="a"?"":""}</p>
+    ${r.override_note?`<div class="brief">${esc(r.override_note)}</div>`:""}
+    ${t.brief?`<div class="brief">${esc(t.brief)}</div>`:""}
+    ${ex.length?`<div class="progress"><i style="width:${Math.round(doneN/ex.length*100)}%"></i></div><div class="work" id="work">${blocks}</div>`:`<div class="empty">Sean hasn't posted the work for ${esc(fx.label)} yet. Lock in anyway. Showing up is the session.</div>`}
+    <div class="panel ${ck.locked_in?"hot":""}" id="lockPanel">
+      <div class="label"><span>${isToday?"Lock in":"Check in for "+fmt(d)}</span><b id="rollN">${S.me.rollcall} locked in today</b></div>
+      <div class="row2"><button class="btn ${ck.locked_in?"on":""}" id="bLock">${ck.locked_in?"Locked in":"Lock in"}</button><button class="btn ghost ${ck.work_done?"on":""}" id="bDone">${ck.work_done?"Work done":"Mark work done"}</button></div>
+      <div class="field"><label for="ni">Niyyah, your intention for today</label><input id="ni" maxlength="200" placeholder="Why you're training today" value="${esc(ck.niyyah||"")}"></div>
+      <div class="row2"><div class="field"><label for="wt">Weight (optional)</label><input id="wt" inputmode="decimal" placeholder="lbs" value="${ck.weight??""}"></div>
+      <div class="field"><label for="nt">Notes</label><input id="nt" maxlength="1000" placeholder="How it went" value="${esc(ck.notes||"")}"></div></div>
+      <button class="btn ghost small" id="bSave">Save notes</button>
+      <div class="msg" id="m" role="status"></div>
+    </div>
+    ${isToday?"":`<button class="btn ghost" onclick="S.day=today();route()">Back to today</button>`}
+  </section>`;
+  const st={locked:!!ck.locked_in,done:!!ck.work_done};
+  async function save(extra){const m=$("#m");m.className="msg";
+    const w=parseFloat($("#wt").value);
+    try{const res=await auth("lockin_checkin",{p_day:d,p_today:today(),p_locked:st.locked,p_done:st.done,p_weight:isNaN(w)?null:w,p_niyyah:$("#ni").value.trim()||null,p_notes:$("#nt").value.trim()||null});
+      S.me.stats=res.stats;S.me.rollcall=res.rollcall;$("#streakN").textContent=res.stats.streak;$("#rollN").textContent=`${res.rollcall} locked in today`;
+      $("#bLock").className="btn "+(st.locked?"on":"");$("#bLock").textContent=st.locked?"Locked in":"Lock in";
+      $("#bDone").className="btn ghost "+(st.done?"on":"");$("#bDone").textContent=st.done?"Work done":"Mark work done";
+      $("#lockPanel").classList.toggle("hot",st.locked);
+      m.textContent=extra||(st.locked?`Locked in. Day ${res.stats.streak}.`:"Saved.");}
+    catch(e){m.className="msg err";m.textContent=e.message;}}
+  $("#bLock").onclick=()=>{st.locked=!st.locked;if(!st.locked)st.done=false;save();};
+  $("#bDone").onclick=()=>{st.done=!st.done;if(st.done)st.locked=true;save(st.done?"Work done. That's the session.":"");};
+  $("#bSave").onclick=()=>save("Saved.");
+  const work=$("#work");
+  if(work){work.addEventListener("click",e=>{const rest=e.target.closest(".rest");if(rest){startRest(rest);return;}
+      const el=e.target.closest(".ex");if(!el)return;const id=+el.dataset.id;
+      if(doneIds.has(id))doneIds.delete(id);else doneIds.add(id);store("lockin-done-"+d,[...doneIds]);
+      el.classList.toggle("done",doneIds.has(id));el.setAttribute("aria-checked",doneIds.has(id));
+      const n=ex.filter(x=>doneIds.has(x.id)).length;$(".progress i").style.width=Math.round(n/ex.length*100)+"%";
+      if(n===ex.length&&!st.done){st.done=true;st.locked=true;save("All of it. Work done.");}});
+    work.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){const el=e.target.closest(".ex");if(el){e.preventDefault();el.click();}}});}
+}
+function parseRest(s){if(!s)return 0;const m=String(s).match(/(\d+)\s*(min|m|sec|s)?/i);if(!m)return 0;const n=+m[1];return /m/i.test(m[2]||"")?n*60:n;}
+function startRest(el){const s=+el.dataset.s;if(!s)return;if(restT){clearInterval(restT);restT=null;document.querySelectorAll(".rest.run").forEach(r=>{r.classList.remove("run");r.innerHTML=r.dataset.orig;});}
+  el.dataset.orig=el.dataset.orig||el.innerHTML;let left=s;el.classList.add("run");const tick=()=>{el.innerHTML=`rest <b>${Math.floor(left/60)}:${String(left%60).padStart(2,"0")}</b>`;if(left<=0){clearInterval(restT);restT=null;el.classList.remove("run");el.innerHTML=el.dataset.orig;if(navigator.vibrate)navigator.vibrate([120,60,120]);}left--;};tick();restT=setInterval(tick,1000);}
+
+/* ===== month ===== */
+async function viewMonth(){
+  const base=S.cal||today().slice(0,7);const [y,mo]=base.split("-").map(Number);
+  main.innerHTML=`<section class="screen"><div class="monthhead"><h2>${MON[mo-1]} ${y}</h2><div style="display:flex;gap:6px"><button class="btn ghost small" id="pv" aria-label="Previous month">&larr;</button><button class="btn ghost small" id="nx" aria-label="Next month">&rarr;</button></div></div><p class="sub">Loading.</p></section>`;
+  $("#pv").onclick=()=>{S.cal=ymd(new Date(y,mo-2,1)).slice(0,7);viewMonth();};$("#nx").onclick=()=>{S.cal=ymd(new Date(y,mo,1)).slice(0,7);viewMonth();};
+  let days;try{days=await auth("lockin_month",{p_year:y,p_month:mo,p_today:today()});}catch(e){$(".sub").className="msg err";$(".msg").textContent=e.message;return;}
+  const F=S.me.focus||{},first=new Date(y,mo-1,1).getDay(),T=today();
+  let cells=DOW.map(d=>`<div class="dow">${d[0]}</div>`).join("");
+  for(let i=0;i<first;i++)cells+=`<div class="day blank"></div>`;
+  const inN=days.filter(d=>d.locked_in).length;
+  days.forEach(d=>{const f=F[d.focus]||{label:d.focus||""};const n=+d.day.slice(8);
+    cells+=`<div class="day ${d.day===T?"today":""} ${d.locked?"locked":""} ${d.locked_in?"in":""} ${d.work_done?"done":""}" data-d="${d.day}" ${d.locked?"":'tabindex="0" role="button"'}><span class="n">${n}</span><span class="f">${d.locked?"&#9679;":esc(f.label)}</span></div>`;});
+  $("section").insertAdjacentHTML("beforeend",`<div class="cal" id="cal">${cells}</div><div class="legend"><span><i></i>Locked in</span><span><i class="e"></i>Work done</span><span>${inN} this month</span></div>`);
+  $(".sub").remove();
+  $("#cal").addEventListener("click",e=>{const el=e.target.closest(".day");if(!el||el.classList.contains("locked")||el.classList.contains("blank"))return;S.day=el.dataset.d;location.hash="#today";route();});
+}
+
+/* ===== roll call ===== */
+async function viewRoll(){
+  main.innerHTML=`<section class="screen"><div class="label"><span>Roll call</span><b>${fmt(today())}</b></div><p class="sub">Loading.</p></section>`;
+  let r;try{r=await auth("lockin_rollcall",{p_today:today()});}catch(e){main.innerHTML=`<section class="screen"><p class="msg err">${esc(e.message)}</p></section>`;return;}
+  main.innerHTML=`<section class="screen">
+    <div class="label"><span>Roll call</span><b>${fmt(today())}</b></div>
+    <div class="big">${r.count}</div><p class="sub">locked in today. ${r.week} this week. ${S.me.unit} in The Lock In.</p>
+    <h3>Present</h3>
+    ${r.names.length?`<ul class="roll">${r.names.map(n=>`<li><div>${esc(n.name)} <span>· ${esc(n.city||"")}</span></div><b>${n.done?"DONE":"IN"}</b></li>`).join("")}</ul>`:`<div class="empty">Nobody yet today. Be first on the list.</div>`}
+    ${r.streaks.length?`<h3>Longest streaks</h3><ul class="roll">${r.streaks.map(s=>`<li><div>${esc(s.name)} <span>· ${esc(s.city||"")}</span></div><b>${s.streak} DAYS</b></li>`).join("")}</ul>`:""}
+  </section>`;
+}
+
+/* ===== fight ===== */
+let fightT=null;
+function viewFight(){
+  const f=S.me.fight||{};
+  const when=f.date?new Date(f.date):null;const has=when&&!isNaN(when);
+  main.innerHTML=`<section class="screen">
+    <div class="label"><span>Fight night</span><b>${has?esc(f.event||""):"Camp"}</b></div>
+    ${has?`<h2>${esc(f.opponent?"Sharaf vs "+f.opponent:"Next fight")}</h2><p class="sub">${esc([f.venue,when.toLocaleDateString([], {weekday:"long",month:"long",day:"numeric"})].filter(Boolean).join(" · "))}</p>
+      <div class="count" id="cd"><div><b>0</b><span>days</span></div><div><b>0</b><span>hours</span></div><div><b>0</b><span>min</span></div><div><b>0</b><span>sec</span></div></div>
+      ${f.note?`<div class="brief">${esc(f.note)}</div>`:""}`
+    :`<h2>Next fight: not announced</h2><p class="sub">When Sean's next fight gets booked, the countdown lands here and the unit gets the word first.</p>`}
+    <h3>The record</h3>
+    <div class="ko"><b>0:12</b><div class="sub">UFC 331, September 19, 2026. Gable Steveson. Right hand, left hook. The third fastest knockout in UFC heavyweight history.</div></div>
+    <div class="stat"><div><b>5</b><span>wins</span></div><div><b>5</b><span>by KO</span></div><div><b>5</b><span>round one</span></div></div>
+    <p class="note">Six years a United States Marine, embassy security guard. Pro since 2021. Santa Ana, California. Blood from Jerusalem.</p>
+  </section>`;
+  if(fightT){clearInterval(fightT);fightT=null;}
+  if(has){const tick=()=>{let s=Math.max(0,Math.floor((when-Date.now())/1000));const d=Math.floor(s/86400);s-=d*86400;const h=Math.floor(s/3600);s-=h*3600;const m=Math.floor(s/60);s-=m*60;
+    const b=document.querySelectorAll("#cd b");if(!b.length){clearInterval(fightT);return;}b[0].textContent=d;b[1].textContent=h;b[2].textContent=m;b[3].textContent=s;};tick();fightT=setInterval(tick,1000);}
+}
+
+/* ===== me ===== */
+async function viewMe(){
+  const m=S.me.member,s=S.me.stats;
+  main.innerHTML=`<section class="screen">
+    <div class="label"><span>Your tag</span><b>${m.tag_num?"No. "+pad(m.tag_num):"Unstamped"}</b></div>
+    <div class="tag"><div class="t">Sharaf unit</div><div class="t">${esc((m.name||"").toUpperCase())}</div><div class="t">${esc((m.city||"").toUpperCase())}</div><div class="t n">${m.tag_num?"No. "+pad(m.tag_num):"No. ??????"}</div><div class="ar" lang="ar">شرف</div></div>
+    <div class="stat"><div><b>${s.streak}</b><span>day streak</span></div><div><b>${s.total}</b><span>days locked in</span></div><div><b>${s.work_done}</b><span>sessions done</span></div></div>
+    <form id="pf" class="screen">
+      <div class="row2"><div class="field"><label for="nm">Name</label><input id="nm" maxlength="40" value="${esc(m.name||"")}"></div><div class="field"><label for="ct">City</label><input id="ct" maxlength="60" value="${esc(m.city||"")}"></div></div>
+      <div class="field"><label for="md">Where you train</label><select id="md"><option value="gym">Gym</option><option value="home">Home, no gym</option></select></div>
+      <button class="btn ghost" type="submit">Save</button><div class="msg" id="m" role="status"></div>
+    </form>
+    <h3>History</h3><div id="hist"><p class="note">Loading.</p></div>
+    <div class="row2"><a class="btn ghost" href="../">Back to the site</a><button class="btn ghost" id="out" type="button">Sign out</button></div>
+    <p class="note">Signed in as ${esc(m.email)} · Build ${BUILD}</p>
+  </section>`;
+  $("#md").value=m.mode||"gym";
+  $("#pf").addEventListener("submit",async e=>{e.preventDefault();const mm=$("#m");mm.className="msg";try{S.me.member=await auth("lockin_profile",{p_name:$("#nm").value,p_city:$("#ct").value,p_mode:$("#md").value});mm.textContent="Saved.";viewMe();}catch(err){mm.className="msg err";mm.textContent=err.message;}});
+  $("#out").onclick=()=>signout(true);
+  try{const h=await auth("lockin_history",{p_today:today()});
+    $("#hist").innerHTML=h.length?`<ul class="roll">${h.slice(0,30).map(x=>`<li><div>${fmt(x.day)}${x.niyyah?` <span>· ${esc(x.niyyah)}</span>`:""}${x.weight?` <span>· ${x.weight} lbs</span>`:""}</div><b>${x.work_done?"DONE":x.locked_in?"IN":"—"}</b></li>`).join("")}</ul>`:`<div class="empty">No days yet. Lock in today and it starts here.</div>`;}
+  catch(e){$("#hist").innerHTML=`<p class="msg err">${esc(e.message)}</p>`;}
+}
+
+boot();
+</script>
+</body>
+</html>
